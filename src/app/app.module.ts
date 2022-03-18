@@ -14,7 +14,12 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
-import { LoginadminComponent } from './admin/component/loginadmin/loginadmin.component';
+import {LoginadminComponent} from './admin/component/loginadmin/loginadmin.component';
+import {AppAdminComponent} from './admin/component/app-admin/app-admin.component';
+import {PageNotFoundComponent} from './util/page-not-found/page-not-found.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
+import { MovieChildComponent } from './admin/component/movie-child/movie-child.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +29,9 @@ import { LoginadminComponent } from './admin/component/loginadmin/loginadmin.com
     HomeComponent,
     DashboardComponent,
     LoginadminComponent,
+    AppAdminComponent,
+    PageNotFoundComponent,
+    MovieChildComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +42,9 @@ import { LoginadminComponent } from './admin/component/loginadmin/loginadmin.com
     MatIconModule,
     MatToolbarModule,
     MatMenuModule,
-    MatButtonModule
+    MatButtonModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
