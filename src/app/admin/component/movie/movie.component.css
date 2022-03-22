@@ -1,0 +1,21 @@
+* {
+  background: #111111;
+  min-height: 100%;
+}
+.flex-wrap-movielist {
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-right: -30px;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+@media (max-width: 991px) {
+  .flex-wrap-movielist .movie-item-style-2 {
+    margin-right: 10px;
+  }
+}

@@ -1,0 +1,40 @@
+<div class="limiter">
+  <div class="container-login100">
+    <div class="wrap-login100">
+      <form class="login100-form" [formGroup]="loginForm" (ngSubmit)="checkLogin()">
+					<span class="login100-form-title">
+						Admin login
+					</span>
+
+        <div class="wrap-input100">
+          <input class="input100" type="text" placeholder="Username" formControlName="username">
+          <span class="focus-input100"></span>
+          <span class="symbol-input100">
+							<mat-icon>account_circle</mat-icon>
+						</span>
+        </div>
+
+        <div class="wrap-input100">
+          <input class="input100" type="password" formControlName="password" placeholder="Password">
+          <span class="focus-input100"></span>
+          <span class="symbol-input100">
+							<mat-icon>lock</mat-icon>
+						</span>
+        </div>
+
+        <div class="container-login100-form-btn">
+          <button class="login100-form-btn" type="submit">Login</button>
+        </div>
+        <br>
+        <div class="text-center p-t-12">
+						<span class="txt1">
+							Forgot
+						</span>
+          <a class="txt2" href="#">
+            Username / Password?
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './admin/component/header/header.component';
 import {SidenavComponent} from './admin/component/sidenav/sidenav.component';
-import {HomeComponent} from './admin/component/home/home.component';
+import {MovieComponent} from './admin/component/movie/movie.component';
 import {DashboardComponent} from './admin/component/dashboard/dashboard.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -26,7 +26,7 @@ import { MovieChildComponent } from './admin/component/movie-child/movie-child.c
     AppComponent,
     HeaderComponent,
     SidenavComponent,
-    HomeComponent,
+    MovieComponent,
     DashboardComponent,
     LoginadminComponent,
     AppAdminComponent,
