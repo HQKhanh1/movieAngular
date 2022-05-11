@@ -20,6 +20,12 @@ import {PageNotFoundComponent} from './util/page-not-found/page-not-found.compon
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { MovieChildComponent } from './admin/component/movie-child/movie-child.component';
+import { AddMovieComponent } from './admin/component/add-movie/add-movie.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { PaginatorComponent } from './util/paginator/paginator.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -32,6 +38,8 @@ import { MovieChildComponent } from './admin/component/movie-child/movie-child.c
     AppAdminComponent,
     PageNotFoundComponent,
     MovieChildComponent,
+    AddMovieComponent,
+    PaginatorComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +52,11 @@ import { MovieChildComponent } from './admin/component/movie-child/movie-child.c
     MatMenuModule,
     MatButtonModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

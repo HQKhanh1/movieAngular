@@ -16,3 +16,6 @@ mat-drawer {
 mat-drawer-container {
   height: 100%;
 }
+.drawer-content{
+  background: #111111;
+}

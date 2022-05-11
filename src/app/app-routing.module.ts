@@ -5,6 +5,8 @@ import {AppAdminComponent} from './admin/component/app-admin/app-admin.component
 import {LoginadminComponent} from './admin/component/loginadmin/loginadmin.component';
 import {PageNotFoundComponent} from './util/page-not-found/page-not-found.component';
 import {MovieComponent} from './admin/component/movie/movie.component';
+import {AddMovieComponent} from './admin/component/add-movie/add-movie.component';
+import {AuthGaurdService} from '../service/auth-gaurd-service-service.service';
 
 const routes: Routes = [
   {
@@ -16,7 +18,9 @@ const routes: Routes = [
         children: [
           {path: 'movie', component: MovieComponent},
           {path: 'dashboard', component: DashboardComponent},
-        ]
+          {path: 'add-movie', component: AddMovieComponent}
+        ],
+        canActivate: [AuthGaurdService]
       },
       {path: '**', component: PageNotFoundComponent}
     ]
