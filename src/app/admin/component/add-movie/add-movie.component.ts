@@ -94,7 +94,9 @@ export class AddMovieComponent implements OnInit {
       data: this.genreList
     });
     dialogRef.afterClosed().subscribe((result: any) => {
-      this.genreList = result;
+      if (result) {
+        this.genreList = result;
+      }
     });
   }
 }
