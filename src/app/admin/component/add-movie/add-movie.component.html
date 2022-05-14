@@ -1,1 +1,135 @@
-<p>add-movie works!</p>
+<h1>Add Movie</h1>
+<mat-dialog-content>
+  <div class="dialog">
+    <div class="dialog left">
+      <div class="item">
+        <mat-form-field appearance="fill">
+          <mat-label>Poster</mat-label>
+          <input matInput placeholder="">
+        </mat-form-field>
+      </div>
+      <span *ngIf="true" class="item">
+      <img style="width: 170px; height: 255px"
+           src="https://m.media-amazon.com/images/M/MV5BNjQ3ZmQxMGEtMTU3Yi00M2RhLWJhOGYtMWJkZDYyNzZlYTk2XkEyXkFqcGdeQXVyNzI1NzMxNzM@._V1_FMjpg_UX1000_.jpg"
+           alt="poster">
+    </span>
+      <div class="item">
+        <mat-form-field appearance="fill">
+          <mat-label>Link Trailer</mat-label>
+          <input matInput placeholder="">
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <mat-form-field appearance="fill">
+          <mat-label>Link Movie</mat-label>
+          <input matInput placeholder="">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="dialog right">
+      <div class="item">
+        <mat-form-field class="date-picker" appearance="fill">
+          <mat-label>Release Date</mat-label>
+          <input matInput [matDatepicker]="picker" [max]="maxDate">
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker color="primary"></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <mat-hint>Movie Duration</mat-hint>
+      </div>
+      <div class="item time-pick">
+        <!--      <ngb-timepicker [meridian]="true"></ngb-timepicker>-->
+        <mat-form-field class="time hours">
+          <input
+            type="number"
+            matInput
+            min="0"
+            placeholder="hours"
+            [(ngModel)]="hours">
+        </mat-form-field>
+        <mat-form-field class="time minutes">
+          <input
+            type="number"
+            matInput
+            min="0"
+            placeholder="minutes"
+            [(ngModel)]="minutes"
+            (change)="eventChangeMinutes(minutes)">
+        </mat-form-field>
+        <mat-form-field class="time seconds">
+          <input
+            type="number"
+            matInput
+            min="0"
+            placeholder="seconds"
+            [(ngModel)]="second" (change)="eventChangeSecond(second)">
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <mat-form-field appearance="fill">
+          <mat-label>Movie Status</mat-label>
+          <mat-select [(ngModel)]="selectedValue">
+            <mat-option *ngFor="let movie of movieStatus" [value]="movie.id">
+              {{movie.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <mat-form-field appearance="fill">
+          <mat-label>Title</mat-label>
+          <textarea matInput></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="dialog center">
+      <div class="item" style="display: table">
+        <mat-form-field appearance="fill">
+          <mat-label>Movie Genre</mat-label>
+          <mat-select [formControl]="movieGenre" multiple>
+            <mat-select-trigger>
+              <mat-chip-list>
+                <mat-chip
+                  *ngFor="let id of movieGenre.value"
+                  [removable]="true"
+                  [value]="id" (removed)="removeGenre(id)">
+                  {{genreList[id - 1].name}}
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-list>
+            </mat-select-trigger>
+            <mat-option *ngFor="let genre of genreList" [value]="genre.id">{{genre.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button
+          style="
+          display: table-cell;
+          vertical-align: top;
+          margin-top: 10px" mat-button (click)="onCreateGenre()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <div class="item">
+        <mat-form-field appearance="fill">
+          <mat-label>Title</mat-label>
+          <input matInput placeholder="">
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <mat-form-field appearance="fill">
+          <mat-label>Title</mat-label>
+          <input matInput placeholder="">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="group-button">
+    <button class="save-movie-btn" mat-raised-button>
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+</mat-dialog-actions>

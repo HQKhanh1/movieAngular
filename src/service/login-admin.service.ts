@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {LoginForm} from '../model/login';
-import {AccRole} from "../model/accRole";
+import {AccRole} from '../model/AccRole';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,6 @@ export class LoginAdminService {
   }
 
   public loginAdmin(login: LoginForm) {
-    console.log(JSON.stringify(login));
     return this.httpClient.post(
       'http://localhost:8080/api/auth/login',
       JSON.stringify(login), this.httpOptions);

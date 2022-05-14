@@ -4,7 +4,12 @@
     <mat-icon style="color: #ffffff">account_circle</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>HeHeHe</button>
-    <button mat-menu-item (click)="this.logout()">Logout</button>
+    <button mat-menu-item>
+      <mat-icon style="color: #000000">account_circle</mat-icon>
+      {{username}}</button>
+    <button mat-menu-item (click)="this.logout()">
+      <mat-icon style="color: #000000">exit_to_app</mat-icon>
+      Logout
+    </button>
   </mat-menu>
 </mat-toolbar>

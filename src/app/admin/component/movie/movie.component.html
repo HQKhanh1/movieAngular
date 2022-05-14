@@ -1,5 +1,7 @@
 <div class="add-movie">
-  <button class="add-movie-btn" mat-raised-button><mat-icon>playlist_add</mat-icon></button>
+  <button class="add-movie-btn" mat-raised-button (click)="onCreate()">
+    <mat-icon>playlist_add</mat-icon>
+  </button>
 </div>
 <div class="title-list-movie">
   <h1>movie list</h1>
@@ -7,23 +9,9 @@
 <mat-divider></mat-divider>
 <div class="list-movie">
   <div class="flex-wrap-movielist">
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
-    <app-movie-child class="test"></app-movie-child>
+    <div *ngFor="let movie of movies">
+      <app-movie-child [movie]="movie" class="test"></app-movie-child>
+    </div>
   </div>
 
 </div>

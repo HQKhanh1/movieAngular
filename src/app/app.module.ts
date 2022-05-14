@@ -17,15 +17,25 @@ import {MatButtonModule} from '@angular/material/button';
 import {LoginadminComponent} from './admin/component/loginadmin/loginadmin.component';
 import {AppAdminComponent} from './admin/component/app-admin/app-admin.component';
 import {PageNotFoundComponent} from './util/page-not-found/page-not-found.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
-import { MovieChildComponent } from './admin/component/movie-child/movie-child.component';
-import { AddMovieComponent } from './admin/component/add-movie/add-movie.component';
+import {MovieChildComponent} from './admin/component/movie-child/movie-child.component';
+import {AddMovieComponent} from './admin/component/add-movie/add-movie.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import { PaginatorComponent } from './util/paginator/paginator.component';
+import {PaginatorComponent} from './util/paginator/paginator.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MomentDateModule} from '@angular/material-moment-adapter';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MatSelectModule} from '@angular/material/select';
+import {MatChipsModule} from '@angular/material/chips';
+import {AddGenreMovieComponent} from './admin/component/add-genre-movie/add-genre-movie.component';
+
 
 @NgModule({
   declarations: [
@@ -39,8 +49,10 @@ import {MatInputModule} from '@angular/material/input';
     PageNotFoundComponent,
     MovieChildComponent,
     AddMovieComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    AddGenreMovieComponent,
   ],
+  entryComponents: [AddMovieComponent, AddGenreMovieComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -53,13 +65,23 @@ import {MatInputModule} from '@angular/material/input';
     MatButtonModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgxMaterialTimepickerModule,
     MatPaginatorModule,
     MatTableModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MomentDateModule,
+    FormsModule,
+    NgbModule,
+    MatSelectModule,
+    MatChipsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [AddMovieComponent],
 })
 export class AppModule {
 }

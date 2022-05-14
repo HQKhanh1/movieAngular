@@ -21,6 +21,8 @@ a {
 }
 
 .movie-item-style-2 img {
+  width: 170px;
+  height: 255px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;

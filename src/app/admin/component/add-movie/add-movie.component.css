@@ -1,0 +1,42 @@
+.dialog {
+  margin-bottom: 20px;
+  float: left;
+}
+
+.dialog img {
+  margin: 10px;
+}
+
+.dialog .item {
+  margin: 0 10px 0px;
+}
+
+.dialog .item mat-hint {
+  margin: 7px;
+}
+
+.dialog .item mat-form-field {
+  width: 270px;
+}
+
+.dialog .item mat-form-field textarea {
+  width: 270px;
+  height: 153px;
+}
+
+.dialog .item .time {
+  width: 70px;
+}
+
+.time-pick {
+  padding-left: 10px;
+}
+
+.dialog .item .date-picker {
+  margin-bottom: 30px;
+}
+
+.group-button {
+  clear: left;
+  margin-top: 50px;
+}

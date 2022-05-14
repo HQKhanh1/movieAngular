@@ -41,7 +41,7 @@ export class LoginadminComponent implements OnInit {
           this.loginResponse = new LoginResponse(data.username, data.authenticationToken, data.accountRoleDTO);
           if (this.loginAdminService.checkRoleAdmin(this.loginResponse.getAccRole())) {
             sessionStorage.setItem('token', 'Bearer ' + this.loginResponse.getToken());
-            sessionStorage.setItem('username', 'Bearer ' + this.loginResponse.getUsername());
+            sessionStorage.setItem('username', this.loginResponse.getUsername());
             this.router.navigate(['admin/pages/movie']);
             this.checkLoginTo = true;
           } else {

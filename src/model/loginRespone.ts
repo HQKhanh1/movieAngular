@@ -1,9 +1,9 @@
-import {AccRole} from './accRole';
+import {AccRole} from './AccRole';
 
 export class LoginResponse {
-  private username: string;
-  private token: string;
-  private roles: AccRole[];
+  private readonly username: string;
+  private readonly token: string;
+  private readonly roles: AccRole[];
   getUsername() {
     return this.username;
   }
