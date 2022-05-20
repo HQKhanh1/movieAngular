@@ -30,25 +30,23 @@ export class LoginadminComponent implements OnInit {
     });
   }
 
-  async checkLogin() {
+  checkLogin() {
     this.submitted = true;
     this.loginRequest = new LoginForm(this.loginForm.value.username, this.loginForm.value.password);
-    await this.loginAdminService.loginAdmin(this.loginRequest).toPromise().then((value: any) => {
-      this.loginResponse = value;
-    }, error => {
-      alert('cos loi gi do');
-    });
-    console.log('login:', this.loginResponse);
-    if (this.loginResponse != null) {
-      // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < this.loginResponse.getAccRole().length; i++) {
-        if (this.loginResponse.getAccRole()[i].getName() === 'ROLE_ADMIN') {
-          sessionStorage.setItem('token', 'Bearer ' + this.loginResponse.getToken());
-          sessionStorage.setItem('username', this.loginResponse.getUsername());
-          sessionStorage.setItem('rolename', this.loginResponse.getAccRole()[i].getName());
-          await this.router.navigate(['admin/pages/movie']);
+    this.loginAdminService.loginAdmin(this.loginRequest).subscribe((data: any) => {
+      if (data != null) {
+        this.loginResponse = data;
+        // tslint:disable-next-line:prefer-for-of
+        for (let i = 0; i < this.loginResponse.accountRoleDTO.length; i++) {
+          if (this.loginResponse.accountRoleDTO[i].name === 'ROLE_ADMIN') {
+            sessionStorage.setItem('token', 'Bearer ' + this.loginResponse.token);
+            sessionStorage.setItem('username', this.loginResponse.username);
+            sessionStorage.setItem('rolename', this.loginResponse.accountRoleDTO[i].name);
+            this.router.navigate(['admin/pages/movie']);
+          }
         }
       }
-    }
+    });
+    console.log('login:', this.loginResponse.accountRoleDTO);
   }
 }

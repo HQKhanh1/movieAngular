@@ -1,0 +1,30 @@
+.dialog {
+  margin-bottom: 10px;
+  float: left;
+}
+
+.dialog img {
+  margin: 10px;
+}
+
+.dialog .item {
+  margin: 0 10px 0;
+}
+
+.dialog .item mat-hint {
+  margin-bottom: 5px;
+}
+
+.dialog .item mat-form-field {
+  width: 270px;
+  margin-top: 5px;
+}
+
+.dialog .item mat-form-field textarea {
+  height: 100px;
+}
+
+.group-button {
+  clear: left;
+  margin-top: 10px;
+}

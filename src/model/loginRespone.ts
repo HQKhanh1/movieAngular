@@ -1,9 +1,9 @@
 import {AccRole} from './AccRole';
 
 export class LoginResponse {
-  private readonly username: string;
-  private readonly token: string;
-  private readonly roles: AccRole[];
+  username: string;
+  token: string;
+  accountRoleDTO: AccRole[];
   getUsername() {
     return this.username;
   }
@@ -11,11 +11,11 @@ export class LoginResponse {
     return this.token;
   }
   getAccRole() {
-    return this.roles;
+    return this.accountRoleDTO;
   }
   constructor(username: string, token: string, roles: AccRole[]) {
     this.username = username;
     this.token = token;
-    this.roles = roles;
+    this.accountRoleDTO = roles;
   }
 }
