@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {Movie} from '../../../../model/movie';
+import {MovieService} from "../../../../service/movie.service";
 
 @Component({
   selector: 'app-movie-child',
@@ -8,9 +9,20 @@ import {Movie} from '../../../../model/movie';
 })
 export class MovieChildComponent implements OnInit {
   @Input() movie: Movie;
-  constructor() { }
+  @Output() deleteMovieEvent = new EventEmitter<Movie>();
+
+  constructor(private movieService: MovieService) {
+  }
 
   ngOnInit() {
   }
 
+  deleteMovie(id: number) {
+    this.movieService.deleteMovie(id).subscribe((data: any) => {
+      if (data) {
+        this.deleteMovieEvent.emit(this.movie);
+        alert('Movie deleted successfully');
+      }
+    });
+  }
 }

@@ -1,3 +1,8 @@
+import {FKGenre} from './FKGenre';
+import {FKCast} from './FKCast';
+import {FKDirector} from './FKDirector';
+import {MovieEvalute} from './MovieEvalute';
+
 export class Movie {
   id: number;
   title: string;
@@ -6,21 +11,29 @@ export class Movie {
   movieStatus: boolean;
   linkTrailer: string;
   linkMovie: string;
-  releaseDate: string;
+  releaseDate: Date;
   movieDuration: string;
   viewNumber: number;
+  fkGenres: FKGenre[];
+  fkCasts: FKCast[];
+  fkDirectors: FKDirector[];
+  movieEvaluates: MovieEvalute[];
 
-  constructor(id: number,
-              title: string,
-              poster: string,
-              detail: string,
-              movieStatus: boolean,
-              linkTrailer: string,
-              linkMovie: string,
-              releaseDate: number[],
-              movieDuration: string,
-              viewNumber: number
-  ) {
+  constructor(
+    id: number,
+    title: string,
+    poster: string,
+    detail: string,
+    movieStatus: boolean,
+    linkTrailer: string,
+    linkMovie: string,
+    releaseDate: Date,
+    movieDuration: string,
+    viewNumber: number,
+    fkGenre: FKGenre[],
+    fkCast: FKCast[],
+    fkDirector: FKDirector[],
+    movieEvaluates: MovieEvalute[]) {
     this.id = id;
     this.title = title;
     this.poster = poster;
@@ -28,8 +41,12 @@ export class Movie {
     this.movieStatus = movieStatus;
     this.linkTrailer = linkTrailer;
     this.linkMovie = linkMovie;
-    this.releaseDate = releaseDate[2] + '-' + releaseDate[1] + '-' + releaseDate[0];
+    this.releaseDate = releaseDate;
     this.movieDuration = movieDuration;
     this.viewNumber = viewNumber;
+    this.fkGenres = fkGenre;
+    this.fkCasts = fkCast;
+    this.fkDirectors = fkDirector;
+    this.movieEvaluates = movieEvaluates;
   }
 }

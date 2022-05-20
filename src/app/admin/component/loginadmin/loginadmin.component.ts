@@ -14,7 +14,7 @@ export class LoginadminComponent implements OnInit {
   checkLoginTo = false;
   submitted = false;
   loginRequest: LoginForm;
-  loginResponse: LoginResponse;
+  loginResponse: LoginResponse = null;
   public loginForm: FormGroup = new FormGroup({});
 
   constructor(
@@ -30,27 +30,25 @@ export class LoginadminComponent implements OnInit {
     });
   }
 
-  public checkLogin() {
+  async checkLogin() {
     this.submitted = true;
-    console.log('username', this.loginForm.value.username);
-    console.log('username', this.loginForm.value.password);
     this.loginRequest = new LoginForm(this.loginForm.value.username, this.loginForm.value.password);
-    this.loginAdminService.loginAdmin(this.loginRequest).subscribe(
-      (data: any) => {
-        if (data.username != null) {
-          this.loginResponse = new LoginResponse(data.username, data.authenticationToken, data.accountRoleDTO);
-          if (this.loginAdminService.checkRoleAdmin(this.loginResponse.getAccRole())) {
-            sessionStorage.setItem('token', 'Bearer ' + this.loginResponse.getToken());
-            sessionStorage.setItem('username', this.loginResponse.getUsername());
-            this.router.navigate(['admin/pages/movie']);
-            this.checkLoginTo = true;
-          } else {
-            alert('Đăng nhập không thành công! Bạn không đủ quyền truy cập trang này');
-          }
-        } else {
-          alert('Đăng nhập không thành công! Vui lòng kiểm tra lại username hoặc password');
+    await this.loginAdminService.loginAdmin(this.loginRequest).toPromise().then((value: any) => {
+      this.loginResponse = value;
+    }, error => {
+      alert('cos loi gi do');
+    });
+    console.log('login:', this.loginResponse);
+    if (this.loginResponse != null) {
+      // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < this.loginResponse.getAccRole().length; i++) {
+        if (this.loginResponse.getAccRole()[i].getName() === 'ROLE_ADMIN') {
+          sessionStorage.setItem('token', 'Bearer ' + this.loginResponse.getToken());
+          sessionStorage.setItem('username', this.loginResponse.getUsername());
+          sessionStorage.setItem('rolename', this.loginResponse.getAccRole()[i].getName());
+          await this.router.navigate(['admin/pages/movie']);
         }
       }
-    );
+    }
   }
 }

@@ -10,7 +10,7 @@
 <div class="list-movie">
   <div class="flex-wrap-movielist">
     <div *ngFor="let movie of movies">
-      <app-movie-child [movie]="movie" class="test"></app-movie-child>
+      <app-movie-child [movie]="movie" class="test" (deleteMovieEvent)="updateAfterDelete($event)"></app-movie-child>
     </div>
   </div>
 

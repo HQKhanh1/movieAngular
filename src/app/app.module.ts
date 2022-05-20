@@ -35,6 +35,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatSelectModule} from '@angular/material/select';
 import {MatChipsModule} from '@angular/material/chips';
 import {AddGenreMovieComponent} from './admin/component/add-genre-movie/add-genre-movie.component';
+import { AddCastMovieComponent } from './admin/component/add-cast-movie/add-cast-movie.component';
+import { AddDirectorMovieComponent } from './admin/component/add-director-movie/add-director-movie.component';
 
 
 @NgModule({
@@ -51,8 +53,15 @@ import {AddGenreMovieComponent} from './admin/component/add-genre-movie/add-genr
     AddMovieComponent,
     PaginatorComponent,
     AddGenreMovieComponent,
+    AddCastMovieComponent,
+    AddDirectorMovieComponent,
   ],
-  entryComponents: [AddMovieComponent, AddGenreMovieComponent],
+  entryComponents: [
+    AddMovieComponent,
+    AddGenreMovieComponent,
+    AddCastMovieComponent,
+    AddDirectorMovieComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -1,24 +1,24 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormControl} from '@angular/forms';
 import {MovieService} from '../../../../service/movie.service';
 import {MAT_DATE_FORMATS} from '@angular/material/core';
 import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {MovieGenre} from '../../../../model/MovieGenre';
 import {MovieGenreService} from '../../../../service/movie-genre.service';
-import {MatDialog} from "@angular/material/dialog";
-import {AddGenreMovieComponent} from "../add-genre-movie/add-genre-movie.component";
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {AddGenreMovieComponent} from '../add-genre-movie/add-genre-movie.component';
+import {MovieCast} from '../../../../model/MovieCast';
+import {MovieCastService} from '../../../../service/movie-cast.service';
+import {AddCastMovieComponent} from '../add-cast-movie/add-cast-movie.component';
+import {MY_DATE_FORMATS} from '../../../../util/FOMAT_DATE';
+import {MovieDirector} from '../../../../model/MovieDirector';
+import {AddDirectorMovieComponent} from '../add-director-movie/add-director-movie.component';
+import {MovieDirectorService} from '../../../../service/movie-director.service';
+import {Movie} from '../../../../model/movie';
+import {FKGenre} from '../../../../model/FKGenre';
+import {FKCast} from '../../../../model/FKCast';
+import {FKDirector} from '../../../../model/FKDirector';
 
-export const MY_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY'
-  },
-};
 
 @Component({
   templateUrl: './add-movie.component.html',
@@ -30,32 +30,55 @@ export const MY_DATE_FORMATS = {
 export class AddMovieComponent implements OnInit {
   movieStatus = [{id: '1', name: 'Shown'}, {id: '0', name: 'Not shown yet'}];
   time: NgbTimeStruct = {hour: 0, minute: 0, second: 0};
+  submitted = false;
   maxDate: Date;
   hours = 0;
   minutes = 0;
   second = 0;
-  selectedValue: any;
   movieGenre = new FormControl();
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
+  movieCast = new FormControl();
+  movieDirector = new FormControl();
   genreList: MovieGenre[] = [];
+  castList: MovieCast[] = [];
   genreListSelected: number[] = [];
+  directorList: MovieDirector[] = [];
+  movieAdd: Movie;
+  movieList: Movie[] = [];
+  fkCast: FKCast[] = [];
+  fkGenre: FKGenre[] = [];
+  fkDirector: FKDirector[] = [];
+  private movieGetByTitle: Movie;
 
-  constructor(private movieService: MovieService,
+  constructor(public movieService: MovieService,
               private movieGenreService: MovieGenreService,
+              private movieCastService: MovieCastService,
+              private movieDirectorService: MovieDirectorService,
+              public dialogRef: MatDialogRef<AddMovieComponent>,
               private matDialog: MatDialog) {
   }
 
   ngOnInit() {
-    this.maxDate = new Date(new Date().getFullYear(), new Date().getMonth(), 13);
+    this.maxDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     this.movieService.formMovie.reset();
     this.movieService.initializeFormGroup();
-    this.movieGenreService.getGenre().subscribe(data => {
-      this.genreList = data;
+    this.movieGenreService.getGenre().subscribe((data: any) => {
+      if (data) {
+        this.genreList = data;
+      }
     });
-
+    this.movieCastService.getCast().subscribe((data: any) => {
+      if (data) {
+        this.castList = data;
+      }
+    });
+    this.movieDirectorService.getDirector().subscribe((data: any) => {
+      if (data) {
+        this.directorList = data;
+      }
+    });
   }
 
-  eventChangeSecond(target: number) {
+  async eventChangeSecond(target: number) {
     if (target >= 60) {
       const mod = Math.floor(target / 60);
       this.second = target - mod * 60;
@@ -68,7 +91,7 @@ export class AddMovieComponent implements OnInit {
     }
   }
 
-  eventChangeMinutes(target: number) {
+  async eventChangeMinutes(target: number) {
     if (target >= 60) {
       const modHour = Math.floor(target / 60);
       this.minutes = target - modHour * 60;
@@ -82,6 +105,18 @@ export class AddMovieComponent implements OnInit {
     this.movieGenre.setValue(index); // To trigger change detection
   }
 
+  removeCast(id: any) {
+    const index = this.movieCast.value as number[];
+    this.removeFirst(index, id);
+    this.movieCast.setValue(index); // To trigger change detection
+  }
+
+  removeDirector(id: any) {
+    const index = this.movieDirector.value as number[];
+    this.removeFirst(index, id);
+    this.movieDirector.setValue(index); // To trigger change detection
+  }
+
   removeFirst<T>(array: T[], toRemove: T): void {
     const index = array.indexOf(toRemove);
     if (index !== -1) {
@@ -90,13 +125,145 @@ export class AddMovieComponent implements OnInit {
   }
 
   onCreateGenre() {
-    const dialogRef = this.matDialog.open(AddGenreMovieComponent, {
-      data: this.genreList
-    });
+    const dialogRef = this.matDialog.open(AddGenreMovieComponent);
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.genreList = result;
       }
     });
+  }
+
+  onCreateCast() {
+    const dialogRef = this.matDialog.open(AddCastMovieComponent);
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.castList = result;
+      }
+    });
+  }
+
+  onCreateDirector() {
+    const dialogRef = this.matDialog.open(AddDirectorMovieComponent);
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        console.log(result);
+        this.directorList = result;
+      }
+    });
+  }
+
+  async saveMovie() {
+    this.submitted = true;
+    if (this.movieService.formMovie.invalid && !this.checkDuration()) {
+      this.movieService.formMovie.value.movieDuration =
+        this.hours.toString() + ':' + this.minutes.toString() + ':' + this.second.toString();
+      this.movieAdd = new Movie(
+        null,
+        this.movieService.formMovie.value.title,
+        this.movieService.formMovie.value.poster,
+        this.movieService.formMovie.value.details,
+        this.movieService.formMovie.value.movieStatus,
+        this.movieService.formMovie.value.linkTrailer,
+        this.movieService.formMovie.value.linkMovie,
+        this.movieService.formMovie.value.releaseDate,
+        this.movieService.formMovie.value.movieDuration,
+        0,
+        null,
+        null,
+        null,
+        null);
+      console.log(this.movieAdd);
+      await this.movieService.addMovie(this.movieAdd).toPromise().then((value: any) => {
+        console.log('Kkkkk: ', value);
+      });
+      await this.movieService.getMovieByTitle(this.movieAdd.title).toPromise().then((value: any) => {
+
+        this.movieGetByTitle = value;
+        console.log('Title: ', this.movieGetByTitle);
+        // add genre
+        if (this.movieGenre.value.length === 0) {
+          this.fkGenre = null;
+        } else {
+          for (const id of this.movieGenre.value) {
+            this.fkGenre.push(new FKGenre(value.id, id));
+          }
+          this.movieGetByTitle.fkGenres = this.fkGenre;
+          console.log('them được genre');
+        }
+        // add cast
+        if (this.movieCast.value.length === 0) {
+          this.fkCast = null;
+        } else {
+          for (const id of this.movieCast.value) {
+            this.fkCast.push(new FKCast(value.id, id));
+          }
+          this.movieGetByTitle.fkCasts = this.fkCast;
+        }
+        // add director
+        if (this.movieDirector.value.length === 0) {
+          this.fkDirector = null;
+        } else {
+          for (const id of this.movieDirector.value) {
+            this.fkDirector.push(new FKDirector(value.id, id));
+          }
+          this.movieGetByTitle.fkDirectors = this.fkDirector;
+        }
+        console.log('pppppppppppp:', this.movieGetByTitle);
+        this.movieService.editMovie(this.movieGetByTitle).subscribe((data: any) => {
+          console.log('uuuuuuuuuuuuuuuuuuuuu', data);
+        });
+      });
+      // this.getMovie(this.movieAdd.title);
+      // console.log('IDIDIDIDIDID: ', idMovie);
+    }
+  }
+
+  addGenresToMovie() {
+  }
+
+  getMovie(title: string) {
+    this.movieService.getMovieByTitle(title).subscribe((data: Movie) => {
+      if (data) {
+        console.log(data);
+        this.movieGetByTitle = data;
+        return data;
+      }
+    });
+  }
+
+  checkDuration(): boolean {
+    return this.hours === 0 && this.minutes === 0 && this.second === 0;
+  }
+
+  genreId(id: number): MovieGenre {
+    for (const genre of this.genreList) {
+      if (genre.id === id) {
+        return genre;
+      }
+    }
+  }
+
+  castId(id: number): MovieCast {
+    for (const cast of this.castList) {
+      if (cast.id === id) {
+        return cast;
+      }
+    }
+  }
+
+  directorId(id: number): MovieDirector {
+    for (const director of this.directorList) {
+      if (director.id === id) {
+        return director;
+      }
+    }
+  }
+
+  onNoClick() {
+    this.movieService.getMovie().subscribe(((data: any) => {
+      this.movieList = data;
+      console.log(this.movieList);
+      this.dialogRef.close(this.movieList);
+    }));
   }
 }
