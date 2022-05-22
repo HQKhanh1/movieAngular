@@ -50,6 +50,7 @@ export class MovieService {
 
   public getMovie(): Observable<any> {
     this.headers = sessionStorage.getItem('token');
+    console.log(this.headers);
     this.httpOptions = {
       headers: new HttpHeaders({
         Authorization: this.headers,

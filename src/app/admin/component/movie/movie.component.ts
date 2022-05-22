@@ -15,13 +15,14 @@ export class MovieComponent implements OnInit {
   constructor(private movieService: MovieService, private matDialog: MatDialog) {
   }
 
-  async ngOnInit() {
-    await this.movieService.getMovie().toPromise().then(
-      value => {
+  ngOnInit() {
+    this.movieService.getMovie().subscribe(
+      (value: any) => {
+        console.log(value);
         this.movies = value;
+        console.log(this.movies);
       }
     );
-    console.log(this.movies);
   }
 
   onCreate() {

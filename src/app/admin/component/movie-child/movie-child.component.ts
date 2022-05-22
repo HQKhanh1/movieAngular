@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {Movie} from '../../../../model/movie';
-import {MovieService} from "../../../../service/movie.service";
+import {MovieService} from '../../../../service/movie.service';
 
 @Component({
   selector: 'app-movie-child',

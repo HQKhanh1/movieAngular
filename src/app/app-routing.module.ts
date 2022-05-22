@@ -7,6 +7,7 @@ import {PageNotFoundComponent} from './util/page-not-found/page-not-found.compon
 import {MovieComponent} from './admin/component/movie/movie.component';
 import {AddMovieComponent} from './admin/component/add-movie/add-movie.component';
 import {AuthGaurdService} from '../service/auth-gaurd-service-service.service';
+import {ProfilePageComponent} from "./admin/component/profile-page/profile-page.component";
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
       {
         path: 'pages', component: AppAdminComponent,
         children: [
+          {path: 'profile', component: ProfilePageComponent},
           {path: 'movie', component: MovieComponent},
           {path: 'dashboard', component: DashboardComponent},
           {path: 'add-movie', component: AddMovieComponent}

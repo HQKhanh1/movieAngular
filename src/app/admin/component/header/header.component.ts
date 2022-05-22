@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LoginAdminService} from '../../../../service/login-admin.service';
+import {ImageModel} from '../../../../model/ImageModel';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -8,14 +10,40 @@ import {LoginAdminService} from '../../../../service/login-admin.service';
 })
 export class HeaderComponent implements OnInit {
   username: string;
-  constructor(private loginService: LoginAdminService) { }
+  accId: number;
+  accImage: ImageModel;
 
-  ngOnInit() {
-    this.username = sessionStorage.getItem('username');
+  constructor(private loginService: LoginAdminService, private router: Router) {
   }
+
+  async ngOnInit() {
+    if (sessionStorage.getItem('username')) {
+      this.username = sessionStorage.getItem('username');
+    }
+    if (sessionStorage.getItem('idAcc')) {
+      this.accId = Number(sessionStorage.getItem('idAcc'));
+      await this.loginService.getAccImage(this.accId).toPromise().then((data: any) => {
+        if (data.statusCode == null) {
+          this.accImage = data;
+        }
+        // if (data.statusCode != null) {
+        //   this.accImage = data;
+        // }
+      });
+    }
+
+  }
+
   public logout() {
     this.loginService.logOut();
     location.reload();
   }
 
+  getImage(): string {
+    return 'url("' + this.accImage.imgName + '")';
+  }
+
+  openProfilePage() {
+    this.router.navigate(['admin/pages/profile']).then(r => {console.log(r); });
+  }
 }

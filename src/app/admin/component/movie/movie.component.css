@@ -1,11 +1,11 @@
 * {
-  background: #111111;
   min-height: 100%;
+
 }
 
 .mat-divider {
   border-top-width: 2px;
-  border-color: rgb(255, 255, 255);
+  border-color: #C9C9C98E;
   margin-top: 5px;
   margin-bottom: 5px;
 }
@@ -27,8 +27,9 @@
   }
 }
 
-.title-list-movie {
-  color: #ffffff;
+.title-list-movie h1{
+  padding: 0 10px;
+  color: #2f2a2a;
   text-transform: uppercase;
 }
 
@@ -47,9 +48,12 @@
 }
 
 .list-movie{
-  /*padding: 100px 100px;*/
+  padding: 10px;
 }
 .list-movie .movie-paginator{
   color: #ffffff;
   margin-right: 100px;
+}
+app-movie-child {
+  background-color: #333333;
 }

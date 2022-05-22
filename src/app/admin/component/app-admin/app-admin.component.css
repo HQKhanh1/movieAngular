@@ -6,7 +6,7 @@
 
 mat-drawer {
   width: 260px;
-  background-color: #080324;
+  background-color: #1A1A27;
 }
 
 .sidenav{
@@ -17,5 +17,5 @@ mat-drawer-container {
   height: 100%;
 }
 .drawer-content{
-  background: #111111;
+  background: #f1f4f7;
 }

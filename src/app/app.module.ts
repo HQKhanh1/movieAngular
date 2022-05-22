@@ -31,12 +31,15 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MomentDateModule} from '@angular/material-moment-adapter';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbAlertModule, NgbModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatSelectModule} from '@angular/material/select';
 import {MatChipsModule} from '@angular/material/chips';
 import {AddGenreMovieComponent} from './admin/component/add-genre-movie/add-genre-movie.component';
-import { AddCastMovieComponent } from './admin/component/add-cast-movie/add-cast-movie.component';
-import { AddDirectorMovieComponent } from './admin/component/add-director-movie/add-director-movie.component';
+import {AddCastMovieComponent} from './admin/component/add-cast-movie/add-cast-movie.component';
+import {AddDirectorMovieComponent} from './admin/component/add-director-movie/add-director-movie.component';
+import {MatCardModule} from '@angular/material/card';
+import {ProfilePageComponent} from './admin/component/profile-page/profile-page.component';
+import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 
 
 @NgModule({
@@ -55,6 +58,7 @@ import { AddDirectorMovieComponent } from './admin/component/add-director-movie/
     AddGenreMovieComponent,
     AddCastMovieComponent,
     AddDirectorMovieComponent,
+    ProfilePageComponent,
   ],
   entryComponents: [
     AddMovieComponent,
@@ -80,6 +84,7 @@ import { AddDirectorMovieComponent } from './admin/component/add-director-movie/
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
+    NgMultiSelectDropDownModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MomentDateModule,
@@ -87,10 +92,13 @@ import { AddDirectorMovieComponent } from './admin/component/add-director-movie/
     NgbModule,
     MatSelectModule,
     MatChipsModule,
+    MatCardModule,
+    NgbPaginationModule,
+    NgbAlertModule
   ],
   providers: [
-    { provide: MAT_DIALOG_DATA, useValue: {} },
-    { provide: MatDialogRef, useValue: {} }],
+    {provide: MAT_DIALOG_DATA, useValue: {}},
+    {provide: MatDialogRef, useValue: {}}],
   bootstrap: [AppComponent],
   exports: [AddMovieComponent],
 })

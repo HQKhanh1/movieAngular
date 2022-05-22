@@ -1,26 +1,3 @@
-/*//////////////////////////////////////////////////////////////////
-[ FONT ]*/
-
-@font-face {
-  font-family: Poppins-Regular;
-  src: url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-}
-
-/*@font-face {*/
-/*  font-family: Poppins-Bold;*/
-/*  src: url('../fonts/poppins/Poppins-Bold.ttf');*/
-/*}*/
-
-/*@font-face {*/
-/*  font-family: Poppins-Medium;*/
-/*  src: url('../fonts/poppins/Poppins-Medium.ttf');*/
-/*}*/
-
-/*@font-face {*/
-/*  font-family: Montserrat-Bold;*/
-/*  src: url('../fonts/montserrat/Montserrat-Bold.ttf');*/
-/*}*/
-
 
 * {
   box-sizing: border-box;
@@ -201,33 +178,21 @@ iframe {
 }
 
 .wrap-login100 {
-  width: 30%;
+  width: 32%;
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
 
   display: flex;
+  text-align: center;
   justify-content: center;
   padding-top: 50px;
-  padding-bottom: 30px;
+  padding-bottom: 20px;
   padding-left: 10px;
 }
 
-/*------------------------------------------------------------------
-[  ]*/
-.login100-pic {
-  width: 316px;
-}
-
-.login100-pic img {
-  max-width: 100%;
-}
-
-
-/*------------------------------------------------------------------
-[  ]*/
 .login100-form {
-  width: 290px;
+  width: 60%;
 }
 
 .login100-form-title {
@@ -246,7 +211,9 @@ iframe {
 
 /*---------------------------------------------*/
 .wrap-input100 {
+  text-align: center;
   position: relative;
+  display: block;
   width: 100%;
   z-index: 1;
   margin-bottom: 10px;
@@ -351,7 +318,6 @@ iframe {
   height: 40px;
   border-radius: 25px;
   background: #57b846;
-  padding: 0 25px;
 
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
@@ -472,4 +438,16 @@ iframe {
 
 .text-center {
   padding-left: 10px;
+}
+.wrap-error {
+  display: flex;
+  justify-content: flex-start;
+}
+mat-error {
+  word-wrap: normal;
+  font-size: 13px;
+  margin-left: 10%;
+}
+.text-center{
+  float: left;
 }

@@ -11,10 +11,10 @@ import {LoginResponse} from '../../../../model/loginRespone';
   styleUrls: ['./loginadmin.component.css']
 })
 export class LoginadminComponent implements OnInit {
-  checkLoginTo = false;
   submitted = false;
   loginRequest: LoginForm;
   loginResponse: LoginResponse = null;
+  errorMessage: string;
   public loginForm: FormGroup = new FormGroup({});
 
   constructor(
@@ -30,23 +30,34 @@ export class LoginadminComponent implements OnInit {
     });
   }
 
-  checkLogin() {
+  async checkLogin() {
     this.submitted = true;
     this.loginRequest = new LoginForm(this.loginForm.value.username, this.loginForm.value.password);
-    this.loginAdminService.loginAdmin(this.loginRequest).subscribe((data: any) => {
-      if (data != null) {
+    await this.loginAdminService.loginAdmin(this.loginRequest).toPromise().then((data: any) => {
+      // console.log(data);
+      if (data.statusCode != null) {
+        this.errorMessage = data.message;
+      } else if (data.statusCode == null) {
         this.loginResponse = data;
+        console.log(this.loginResponse);
         // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < this.loginResponse.accountRoleDTO.length; i++) {
           if (this.loginResponse.accountRoleDTO[i].name === 'ROLE_ADMIN') {
-            sessionStorage.setItem('token', 'Bearer ' + this.loginResponse.token);
+            sessionStorage.setItem('idAcc', this.loginResponse.accId.toString());
+            console.log(this.loginResponse.authenticationToken);
+            sessionStorage.setItem('token', 'Bearer ' + this.loginResponse.authenticationToken);
+            console.log(sessionStorage.getItem('token'));
             sessionStorage.setItem('username', this.loginResponse.username);
             sessionStorage.setItem('rolename', this.loginResponse.accountRoleDTO[i].name);
-            this.router.navigate(['admin/pages/movie']);
           }
         }
+        if (sessionStorage.getItem('rolename') === 'ROLE_ADMIN') {
+          this.router.navigate(['admin/pages/movie']).then(r => console.log('Login'));
+        }
       }
+    }, error => {
+      console.log('\n\n\n\n\nerror', error);
     });
-    console.log('login:', this.loginResponse.accountRoleDTO);
+    // console.log('login:', this.loginResponse.accountRoleDTO);
   }
 }
