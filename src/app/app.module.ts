@@ -94,7 +94,7 @@ import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
     MatChipsModule,
     MatCardModule,
     NgbPaginationModule,
-    NgbAlertModule
+    NgbAlertModule,
   ],
   providers: [
     {provide: MAT_DIALOG_DATA, useValue: {}},

@@ -1,0 +1,162 @@
+<div class="container-xl px-4 mt-4">
+  <div class="row">
+    <div class="col-xl-4">
+      <!-- Profile picture card-->
+      <div class="card mb-4 mb-xl-0">
+        <div class="card-header">Profile Picture</div>
+        <div class="card-body text-center">
+          <!-- Profile picture image-->
+          <img class="img-account-profile rounded-circle mb-2" src="http://bootdey.com/img/Content/avatar/avatar1.png"
+               alt="">
+          <!-- Profile picture help block-->
+          <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+          <!-- Profile picture upload button-->
+          <button class="btn btn-primary" type="button">Upload new image</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-8">
+      <!-- Account details card-->
+      <div class="card mb-4">
+        <div class="card-header">Account Details</div>
+        <div class="card-body">
+          <form [formGroup]="updateAccountForm" (ngSubmit)="onSubmit()">
+            <!-- Form Group (username)-->
+            <div class="form-group mb-3">
+              <label class="small mb-1 text-label" for="inputUsername">Username</label>
+              <input class="form-control" id="inputUsername" type="text"
+                     value="username" formControlName="userName" readonly>
+            </div>
+            <!-- Form Row-->
+            <div class="row gx-3 mb-3">
+              <!-- Form Group (first name)-->
+              <div class="form-group col-md-6">
+                <label class="small mb-1  text-label">First name</label>
+                <input class="form-control" formControlName="firstName"
+                       [ngClass]="{'is-invalid':submitted && updateAccountForm.controls.firstName.errors}"
+                       type="text" placeholder="Enter your first name">
+                <div class="invalid-feedback form-error">First Name is require</div>
+              </div>
+              <!-- Form Group (last name)-->
+              <div class="form-group col-md-6">
+                <label class="small mb-1 text-label">Last name</label>
+                <input class="form-control" formControlName="lastName"
+                       [ngClass]="{'is-invalid':submitted && updateAccountForm.controls.lastName.errors}"
+                       type="text" placeholder="Enter your last name">
+                <div class="invalid-feedback form-error">Last Name is require</div>
+
+
+              </div>
+            </div>
+            <!-- Form Row        -->
+            <div class="row gx-3 mb-3">
+              <!-- Form Group (Choose address)-->
+              <div class="col">
+                <label class="small mb-1 text-label">Choose Province/City</label>
+                <select class="form-select" aria-label="Default select example"
+                        [formControl]="city" (change)="cityChanged()">
+                  <option *ngFor="let citySelect of cities" [value]="citySelect.id">{{citySelect.name}}</option>
+                </select>
+              </div>
+              <div class="col">
+                <label class="small mb-1 text-label">Choose District</label>
+                <select class="form-select" aria-label="Default select example"
+                        [formControl]="district" (change)="districtChanged()">
+                  <option *ngFor="let districtId of districts"
+                          [value]="districtId.id">{{districtId.name}}</option>
+                </select>
+              </div>
+
+              <div class="col">
+                <label class="small mb-1 text-label">Choose Commune/Ward/Town</label>
+                <select class="form-select" aria-label="Default select example"
+                        [formControl]="town">
+                  <option *ngFor="let townId of towns"
+                          [value]="townId.id">{{townId.name}}</option>
+                </select>
+              </div>
+
+            </div>
+            <!-- Form Group (location)-->
+            <div class="form-group mb-3">
+              <label class="small mb-1 text-label" for="inputLocation">Location</label>
+              <input class="form-control" id="inputLocation" type="text" placeholder="Enter your location">
+            </div>
+            <!-- Form Row-->
+            <div class="row gx-3 mb-3">
+
+              <!-- Form Group (phone number)-->
+              <div class="col-md-6">
+                <label class="small mb-1 text-label" for="inputPhone">Phone number</label>
+                <input class="form-control" id="inputPhone" type="text" placeholder="Enter your phone number">
+              </div>
+              <!-- Form Group (birthday)-->
+              <div class="col-md-6">
+                <label class="small mb-1 text-label" for="inputBirthday">Birthday</label>
+                <div class="row">
+                  <div class="col-md-9">
+                    <input class="form-control" placeholder="dd/mm/yyyy" id="inputBirthday"
+                           formControlName="birthday"
+                           name="d2"
+                           [maxDate]="maxDate"
+                           [ngClass]="{'is-invalid':submitted &&
+                           (updateAccountForm.get('birthday').errors?.required || updateAccountForm.get('birthday').errors?.pattern)}"
+                           ngbDatepicker #d2="ngbDatepicker">
+                    <div *ngIf="updateAccountForm.get('birthday').errors?.required" class="invalid-feedback form-error">
+                      Birthday is require
+                    </div>
+                    <div *ngIf="updateAccountForm.get('birthday').errors?.pattern" class="invalid-feedback form-error">
+                      Invalid birthday
+                    </div>
+                  </div>
+                  <button class="btn btn-outline-secondary calendar col-md-3" (click)="d2.toggle()"
+                          type="button"></button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Form Group (email address and sex)-->
+            <div class="row mb3" style="margin-bottom: 10px">
+              <div class="col-md-6">
+                <label class="small mb-1 text-label">Email address</label>
+                <input class="form-control" formControlName="email"
+                       [ngClass]="{'is-invalid':submitted && updateAccountForm.controls.email.errors}"
+                       type="text" placeholder="Enter your email">
+                <div *ngIf="updateAccountForm.get('email').errors?.email"
+                     class="invalid-feedback form-error">Your email is not in the correct format
+                </div>
+                <div *ngIf="updateAccountForm.get('email').errors?.required"
+                     class="invalid-feedback form-error">Your email is required
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label class="small mb-1 text-label">Sex</label>
+                <div class="row mb1" style="margin-left: 0">
+                  <div class="col form-check">
+                    <input class="form-check-input" [value]="true" type="radio" id="male" (change)="show()"
+                           formControlName="gender">
+                    <label class="form-check-label" for="male">
+                      Male
+                    </label>
+                  </div>
+                  <div class="col form-check">
+                    <input class="form-check-input" [value]="false" type="radio" id="female" (change)="show()"
+                           formControlName="gender">
+                    <label class="form-check-label" for="female">
+                      Female
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Save changes button-->
+            <div class="form-group">
+              <button class="btn btn-primary" type="submit">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

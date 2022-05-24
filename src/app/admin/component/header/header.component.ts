@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginAdminService} from '../../../../service/login-admin.service';
 import {ImageModel} from '../../../../model/ImageModel';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -44,6 +44,6 @@ export class HeaderComponent implements OnInit {
   }
 
   openProfilePage() {
-    this.router.navigate(['admin/pages/profile']).then(r => {console.log(r); });
+    this.router.navigate(['admin/pages/profile']).then(r => {location.reload(); });
   }
 }

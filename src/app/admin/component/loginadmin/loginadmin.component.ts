@@ -52,7 +52,9 @@ export class LoginadminComponent implements OnInit {
           }
         }
         if (sessionStorage.getItem('rolename') === 'ROLE_ADMIN') {
-          this.router.navigate(['admin/pages/movie']).then(r => console.log('Login'));
+          this.router.navigate(['admin/pages/movie']).then(r => {
+            location.reload();
+          });
         }
       }
     }, error => {

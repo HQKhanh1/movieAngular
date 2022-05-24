@@ -9,7 +9,7 @@ export class AuthGaurdService {
   constructor(private router: Router, private authService: LoginAdminService) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     if (this.authService.isUserLoggedIn() === false) {
-      this.router.navigate(['admin/login']);
+      this.router.navigate(['admin/login']).then(() => {location.reload(); });
       return false;
     } else {
       return true;
