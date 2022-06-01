@@ -18,9 +18,7 @@ export class MovieComponent implements OnInit {
   ngOnInit() {
     this.movieService.getMovie().subscribe(
       (value: any) => {
-        console.log(value);
         this.movies = value;
-        console.log(this.movies);
       }
     );
   }
@@ -29,7 +27,6 @@ export class MovieComponent implements OnInit {
     const dialogRef = this.matDialog.open(AddMovieComponent);
     dialogRef.afterClosed().subscribe((value: any) => {
       if (value) {
-        console.log(value);
         this.movies = value;
       }
     });

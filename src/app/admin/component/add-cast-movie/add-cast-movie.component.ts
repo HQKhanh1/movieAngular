@@ -6,6 +6,8 @@ import {MY_DATE_FORMATS} from '../../../../util/FOMAT_DATE';
 import {MovieCast} from '../../../../model/MovieCast';
 import {MovieCastService} from '../../../../service/movie-cast.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {UtilClass} from 'src/util/utilClass';
+import {UTIL} from 'src/util/util';
 
 @Component({
   selector: 'app-add-cast-movie',
@@ -45,14 +47,16 @@ export class AddCastMovieComponent implements OnInit {
         this.castForm.value.name,
         this.castForm.value.story,
         this.castForm.value.birthday);
-      this.castService.addCast(this.cast).subscribe((data) => {
+      this.castService.addCast(this.cast).subscribe((data: any) => {
           console.log(data);
+          if (data.statusCode === undefined) {
+            UtilClass.showSuccess(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_ADD_CAST);
+          } else {
+            UtilClass.showSuccess(UTIL.ICON_ERROR, data.message);
+          }
         },
         (error => {
-          if (error.statusText === 'OK') {
-            console.log(error);
-            alert('Create genre successfully');
-          }
+          UtilClass.showSuccess(UTIL.ICON_ERROR, error.message);
         }));
     }
   }

@@ -1,6 +1,4 @@
 @import "~bootstrap/dist/css/bootstrap.css";
-/* You can add global styles to this file, and also import other style files */
-@import "~bootstrap-select/dist/css/bootstrap-select.css";
 
 html {
   height: 100%;
@@ -10,4 +8,7 @@ body {
   height: 100%;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.mat-dialog-container{
+  background-color: #f1f4f7;
 }

@@ -17,10 +17,10 @@ export class MovieService {
   };
   formMovie = new FormGroup({
     id: new FormControl(null),
-    title: new FormControl('a', [Validators.required]),
+    title: new FormControl('', [Validators.required]),
     poster: new FormControl('', [Validators.required]),
     details: new FormControl('', [Validators.required]),
-    movieStatus: new FormControl(1, [Validators.required]),
+    movieStatus: new FormControl(true, [Validators.required]),
     linkTrailer: new FormControl(''),
     linkMovie: new FormControl('', [Validators.required]),
     releaseDate: new FormControl('', [Validators.required]),
@@ -35,22 +35,21 @@ export class MovieService {
 
 
   initializeFormGroup() {
-    this.formMovie.setValue({
-      id: null,
-      title: '',
-      poster: '',
-      details: '',
-      movieStatus: 1,
-      linkTrailer: '',
-      linkMovie: '',
-      releaseDate: '',
-      movieDuration: '',
+    this.formMovie = new FormGroup({
+      id: new FormControl(null),
+      title: new FormControl('', [Validators.required]),
+      poster: new FormControl('', [Validators.required]),
+      details: new FormControl('', [Validators.required]),
+      movieStatus: new FormControl(true, [Validators.required]),
+      linkTrailer: new FormControl(''),
+      linkMovie: new FormControl('', [Validators.required]),
+      releaseDate: new FormControl('', [Validators.required]),
+      movieDuration: new FormControl('', [Validators.required])
     });
   }
 
   public getMovie(): Observable<any> {
     this.headers = sessionStorage.getItem('token');
-    console.log(this.headers);
     this.httpOptions = {
       headers: new HttpHeaders({
         Authorization: this.headers,
@@ -92,6 +91,7 @@ export class MovieService {
       `http://localhost:8080/api/movieDetail/editMovieDetail`,
       JSON.stringify(movie), this.httpOptions);
   }
+
   public addGenretoMovie(fkGenre: FKGenre) {
     if (sessionStorage.getItem('token')) {
       this.headers = 'Bearer ' + sessionStorage.getItem('token');
@@ -100,6 +100,7 @@ export class MovieService {
       `http://localhost:8080/api/movieDetail/addMovie`,
       JSON.stringify(fkGenre), this.httpOptions);
   }
+
   public deleteMovie(id: number) {
     if (sessionStorage.getItem('token')) {
       this.headers = 'Bearer ' + sessionStorage.getItem('token');

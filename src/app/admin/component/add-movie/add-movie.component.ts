@@ -18,6 +18,9 @@ import {Movie} from '../../../../model/movie';
 import {FKGenre} from '../../../../model/FKGenre';
 import {FKCast} from '../../../../model/FKCast';
 import {FKDirector} from '../../../../model/FKDirector';
+import {ImageModel} from '../../../../model/ImageModel';
+import {UTIL} from '../../../../util/util';
+import {ListCastMovieComponent} from '../list-cast-movie/list-cast-movie.component';
 
 
 @Component({
@@ -28,7 +31,6 @@ import {FKDirector} from '../../../../model/FKDirector';
   ]
 })
 export class AddMovieComponent implements OnInit {
-  movieStatus = [{id: '1', name: 'Shown'}, {id: '0', name: 'Not shown yet'}];
   time: NgbTimeStruct = {hour: 0, minute: 0, second: 0};
   submitted = false;
   maxDate: Date;
@@ -48,6 +50,8 @@ export class AddMovieComponent implements OnInit {
   fkGenre: FKGenre[] = [];
   fkDirector: FKDirector[] = [];
   private movieGetByTitle: Movie;
+  fileToUpload: File;
+  movieImage: ImageModel = new ImageModel(UTIL.DEFAUT_MOVIE_POSTER_NAME, UTIL.DEFAULT_MOVIE_POSTER_URL);
 
   constructor(public movieService: MovieService,
               private movieGenreService: MovieGenreService,
@@ -59,16 +63,10 @@ export class AddMovieComponent implements OnInit {
 
   ngOnInit() {
     this.maxDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-    this.movieService.formMovie.reset();
     this.movieService.initializeFormGroup();
     this.movieGenreService.getGenre().subscribe((data: any) => {
       if (data) {
         this.genreList = data;
-      }
-    });
-    this.movieCastService.getCast().subscribe((data: any) => {
-      if (data) {
-        this.castList = data;
       }
     });
     this.movieDirectorService.getDirector().subscribe((data: any) => {
@@ -78,7 +76,10 @@ export class AddMovieComponent implements OnInit {
     });
   }
 
-  async eventChangeSecond(target: number) {
+  eventChangeSecond(target: number) {
+    if (target === null) {
+      this.second = 0;
+    }
     if (target >= 60) {
       const mod = Math.floor(target / 60);
       this.second = target - mod * 60;
@@ -91,11 +92,20 @@ export class AddMovieComponent implements OnInit {
     }
   }
 
-  async eventChangeMinutes(target: number) {
+  eventChangeMinutes(target: number) {
+    if (target === null) {
+      this.minutes = 0;
+    }
     if (target >= 60) {
       const modHour = Math.floor(target / 60);
       this.minutes = target - modHour * 60;
       this.hours = this.hours + modHour;
+    }
+  }
+
+  eventChangeHours(target: number) {
+    if (target === null) {
+      this.hours = 0;
     }
   }
 
@@ -232,7 +242,8 @@ export class AddMovieComponent implements OnInit {
   }
 
   checkDuration(): boolean {
-    return this.hours === 0 && this.minutes === 0 && this.second === 0;
+    return (this.hours === 0 && this.minutes === 0 && this.second === 0) ||
+      (this.hours === null && this.minutes === null && this.second === null);
   }
 
   genreId(id: number): MovieGenre {
@@ -265,5 +276,28 @@ export class AddMovieComponent implements OnInit {
       console.log(this.movieList);
       this.dialogRef.close(this.movieList);
     }));
+  }
+
+  handleFileUpload(files: any) {
+    this.fileToUpload = files.item(0);
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.movieImage = new ImageModel(this.fileToUpload.name, event.target.result);
+    };
+    reader.readAsDataURL(this.fileToUpload);
+  }
+
+  show() {
+    console.log(this.movieCast.value);
+  }
+
+  openCastList() {
+    const dialogRef = this.matDialog.open(ListCastMovieComponent);
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        console.log(result);
+        this.directorList = result;
+      }
+    });
   }
 }

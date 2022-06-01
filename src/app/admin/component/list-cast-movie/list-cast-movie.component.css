@@ -1,0 +1,14 @@
+.root-page {
+  display: flex
+}
+mat-selection-list::ng-deep .mat-list-item {
+  height: 100%;
+}
+.root-content {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+
+}

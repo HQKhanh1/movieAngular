@@ -1,13 +1,46 @@
+
+.mat-divider {
+  border-top-width: 1px;
+  border-color: #C9C9C98E;
+  margin-top: 3px;
+  margin-bottom: 20px;
+}
+.group-timepicker {
+  align-items: center;
+  width: 100%;
+}
+.group-timepicker mat-form-field::ng-deep .mat-form-field-wrapper{
+  padding: 0;
+}
+.col {
+  padding: 0;
+}
+
+.card {
+  margin: 10px;
+}
+mat-radio-button {
+  margin: 5px;
+}
+.card-body {
+  margin: 0;
+  padding: 5px;
+}
+.radio-movie-status {
+  width: 100%;
+}
+
 .dialog {
   margin-bottom: 20px;
-  float: left;
+  display: flex;
+}
+
+.movie_content {
+  display: flex;
 }
 
 .dialog .img-poster {
-  border-width: 2px;
-  border-style: dashed;
-  border-color: #000000;
-  width: 170px;
+  width: 200px;
   height: 255px;
   margin: 0 10px 10px;
 }
@@ -18,27 +51,27 @@ img {
 }
 
 .dialog .item {
-  margin: 0 10px 5px;
-}
-
-.dialog .item mat-hint {
-  margin: 7px;
+  width: 100%;
+  margin: 0 3px;
 }
 
 .dialog .item mat-form-field {
   width: 270px;
 }
+.add-fk .add-fk-form-field {
+  width: 350px;
+}
 
 .dialog .item mat-form-field textarea {
-  height: 153px;
+  height: 111px;
+}
+
+.dialog .item mat-form-field .movie_title {
+  height: 22px;
 }
 
 .dialog .item .time {
-  width: 70px;
-}
-
-.time-pick {
-  padding-left: 10px;
+  width: 33.3333333%;
 }
 
 .dialog .item .date-picker {
@@ -47,4 +80,25 @@ img {
 
 .group-button {
   clear: left;
+}
+
+.button-add-fk {
+  width: 20px;
+}
+.button-add-fk button {
+  display: table-cell;
+  vertical-align: top;
+  margin-top: 10px
+}
+.add-fk {
+  margin-left: 10px;
+  display: flex;
+}
+.add-fk .cast {
+  width: 450px;
+  height: fit-content;
+}
+
+.group-fk {
+  padding: 20px;
 }

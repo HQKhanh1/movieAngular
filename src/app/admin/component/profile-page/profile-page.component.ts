@@ -1,4 +1,4 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {City} from '../../../../model/City';
 import {District} from '../../../../model/District';
@@ -8,6 +8,12 @@ import {NgbDateAdapter, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap
 import {CustomDatePickerService} from '../../../../service/custom-date-picker.service';
 import {CustomDateParseFomatterService} from '../../../../service/custom-date-parse-fomatter.service';
 import {UTIL} from '../../../../util/util';
+import {UploadImageService} from 'src/service/upload-image.service';
+import {AccountService} from 'src/service/account.service';
+import {Account} from '../../../../model/Account';
+import {LoginAdminService} from '../../../../service/login-admin.service';
+import {ImageModel} from '../../../../model/ImageModel';
+import {UtilClass} from '../../../../util/utilClass';
 
 @Component({
   selector: 'app-profile-page',
@@ -20,44 +26,128 @@ import {UTIL} from '../../../../util/util';
 })
 
 export class ProfilePageComponent implements OnInit {
-  maxDate: Date;
+  accId: number;
+  maxDate: any;
+  dayStart: any;
+  infoAccount: Account;
   updateAccountForm!: FormGroup;
+  uploadAccImage!: FormGroup;
   cities: City[] = [];
   districts: District[] = [];
   towns: Town[] = [];
   submitted = false;
+  uploadImageSubmitted = false;
   city = new FormControl('');
   district = new FormControl({value: '', disabled: true});
   town = new FormControl({value: '', disabled: true});
+  accImage: ImageModel = new ImageModel(UTIL.DEFAUT_ACCOUNT_IMAGE_NAME_MALE, UTIL.DEFAULT_ACCOUNT_IMAGE_URL_MALE);
+  fileToUpload: File;
 
-  constructor(private formBuilder: FormBuilder, private addressService: AddressService) {
+  constructor(private formBuilder: FormBuilder,
+              private addressService: AddressService,
+              private uploadImageService: UploadImageService,
+              private accountService: AccountService,
+              private loginService: LoginAdminService) {
+    this.uploadAccImage = new FormGroup({
+      accImage: new FormControl('', Validators.required)
+    });
+    this.updateAccountForm = new FormGroup({
+      userName: new FormControl(''),
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      address: new FormControl(''),
+      gender: new FormControl(true, Validators.required),
+      birthday: new FormControl('', [Validators.required, Validators.pattern(UTIL.DATE_PATERN)]),
+      phoneNumber: new FormControl('', Validators.pattern(UTIL.NUMBER_PHONE_PATERN))
+    });
   }
 
   ngOnInit() {
-    this.maxDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-    this.updateAccountForm = this.formBuilder.group({
-      userName: [''],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      location: [''],
-      gender: [true, Validators.required],
-      birthday: ['', [Validators.required, Validators.pattern(UTIL)]],
-      phoneNumber: ['']
+    this.accId = +sessionStorage.getItem('idAcc');
+    this.maxDate = {year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()};
+    this.getImgAcc().then(r => {
     });
-
-    this.addressService.getCity().toPromise().then((city: any) => {
-      this.cities = city;
+    this.getAccInfo().then(r => {
     });
-    this.updateAccountForm.valueChanges.subscribe(() => {
-      console.log(this.updateAccountForm.value.birthday);
+    this.getCities().then(r => {
     });
   }
 
-  onSubmit() {
+  async getCities() {
+    await this.addressService.getCity().toPromise().then((city: any) => {
+      this.cities = city;
+    });
+  }
+
+  async getAddressDetail() {
+    await this.addressService.getAllByTownId(this.infoAccount.town).toPromise().then((data: any) => {
+      this.district.enable();
+      this.town.enable();
+      this.city = new FormControl(data.cityDTO.id);
+      this.district = new FormControl(data.districtDTO.id);
+      this.town = new FormControl(data.townDTO.id);
+      this.districts = data.districtDTOS;
+      this.towns = data.townDTOs;
+    });
+  }
+
+  async getImgAcc() {
+    await this.loginService.getAccImage(this.accId).toPromise().then((data: any) => {
+      if (data != null) {
+        this.accImage = data;
+      } else {
+        if (this.infoAccount.gender === true) {
+          this.accImage = new ImageModel(UTIL.DEFAUT_ACCOUNT_IMAGE_NAME_MALE, UTIL.DEFAULT_ACCOUNT_IMAGE_URL_MALE);
+        } else {
+          this.accImage = new ImageModel(UTIL.DEFAUT_ACCOUNT_IMAGE_NAME_FEMALE, UTIL.DEFAULT_ACCOUNT_IMAGE_URL_FEMALE);
+        }
+      }
+    });
+  }
+
+  async getAccInfo() {
+    await this.accountService.getAccount(this.accId).toPromise().then((data: any) => {
+      this.infoAccount = data;
+      console.log(data);
+      const date: Date = new Date(this.infoAccount.birthday);
+      const month: number = date.getMonth() + 1;
+      this.dayStart = date.getDate() + '-' + month + '-' + date.getFullYear();
+      this.updateAccountForm = new FormGroup({
+        userName: new FormControl(this.infoAccount.username, Validators.required),
+        firstName: new FormControl(this.infoAccount.firstname, Validators.required),
+        lastName: new FormControl(this.infoAccount.lastname, Validators.required),
+        email: new FormControl(this.infoAccount.email, [Validators.required, Validators.email]),
+        address: new FormControl(this.infoAccount.address),
+        gender: new FormControl(this.infoAccount.gender, Validators.required),
+        birthday: new FormControl(this.dayStart, [Validators.required, Validators.pattern(UTIL.DATE_PATERN)]),
+        phoneNumber: new FormControl(this.infoAccount.phoneNumber, Validators.pattern(UTIL.NUMBER_PHONE_PATERN))
+      });
+      this.getAddressDetail().then(r => {
+      });
+    });
+  }
+
+  async onSubmit() {
     this.submitted = true;
     if (!this.updateAccountForm.invalid) {
-      alert('success');
+      this.infoAccount.firstname = this.updateAccountForm.value.firstName;
+      this.infoAccount.lastname = this.updateAccountForm.value.lastName;
+      this.infoAccount.address = this.updateAccountForm.value.address;
+      this.infoAccount.phoneNumber = this.updateAccountForm.value.phoneNumber;
+      this.infoAccount.birthday = new Date(this.updateAccountForm.value.birthday).getTime();
+      this.infoAccount.email = this.updateAccountForm.value.email;
+      this.infoAccount.gender = this.updateAccountForm.value.gender;
+      this.infoAccount.town = this.town.value;
+      console.log(this.infoAccount.gender);
+      console.log(this.infoAccount);
+      await this.accountService.updateAccount(this.infoAccount).toPromise().then((data: any) => {
+        if (data.statusCode != null) {
+          UtilClass.showSuccess(UTIL.ICON_ERROR, data.message);
+        } else {
+          UtilClass.showSuccess(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_DETAIL_ACCOUNT);
+        }
+      });
     }
   }
 
@@ -72,7 +162,6 @@ export class ProfilePageComponent implements OnInit {
         for (const d of district) {
           this.districts.push(d);
         }
-        // console.log(this.district.disabled);
       }
       this.district.enable();
       this.district = new FormControl(this.districts[0].id);
@@ -84,7 +173,6 @@ export class ProfilePageComponent implements OnInit {
           }
           this.town.enable();
           this.town = new FormControl(this.towns[0].id);
-          // console.log(this.district.disabled);
         }
       });
     });
@@ -100,12 +188,34 @@ export class ProfilePageComponent implements OnInit {
           this.towns.push(t);
         }
         this.town.enable();
-        // console.log(this.district.disabled);
       }
     });
   }
 
   show() {
-    console.log(this.updateAccountForm.value.birthday);
+    console.log(this.updateAccountForm.value.gender);
   }
+
+  handleFileUpload(files: FileList) {
+    this.fileToUpload = files.item(0);
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.accImage = new ImageModel(this.fileToUpload.name, event.target.result);
+    };
+    reader.readAsDataURL(this.fileToUpload);
+  }
+
+  async uploadAccImageSubmit() {
+    this.uploadImageSubmitted = true;
+    if (!this.uploadAccImage.invalid) {
+      await this.uploadImageService.uploadImage(this.fileToUpload, this.accId).toPromise().then((data: any) => {
+        UtilClass.showSuccess(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_AVATAR);
+        setTimeout(() => {
+          location.reload();
+        }, 2000);
+      });
+    }
+  }
+
+
 }

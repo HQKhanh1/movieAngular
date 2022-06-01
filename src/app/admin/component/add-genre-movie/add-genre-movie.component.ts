@@ -4,6 +4,8 @@ import {MyErrorStateMatcher} from '../../../../util/MyErrorStateMatcher';
 import {MovieGenreService} from '../../../../service/movie-genre.service';
 import {MovieGenre} from '../../../../model/MovieGenre';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {UtilClass} from 'src/util/utilClass';
+import {UTIL} from 'src/util/util';
 
 @Component({
   selector: 'app-add-genre-movie',
@@ -34,9 +36,14 @@ export class AddGenreMovieComponent implements OnInit {
     if (this.genreForm.valid) {
       this.genre = new MovieGenre(null, this.genreForm.value.genreName);
       this.movieGenre.addGenre(this.genre).subscribe((data: any) => {
-          alert('Create genre successfully');
+          if (data.statusCode === undefined) {
+            UtilClass.showSuccess(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_ADD_GENRE);
+          } else {
+            UtilClass.showSuccess(UTIL.ICON_ERROR, data.message);
+          }
         },
         (error => {
+          UtilClass.showSuccess(UTIL.ICON_ERROR, error.message);
         }));
     }
   }

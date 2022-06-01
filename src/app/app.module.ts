@@ -40,7 +40,16 @@ import {AddDirectorMovieComponent} from './admin/component/add-director-movie/ad
 import {MatCardModule} from '@angular/material/card';
 import {ProfilePageComponent} from './admin/component/profile-page/profile-page.component';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
+import {UploadImageComponent} from './util/upload-image/upload-image.component';
+import {MatRadioModule} from '@angular/material/radio';
+import {ListCastMovieComponent} from './admin/component/list-cast-movie/list-cast-movie.component';
+import {FilterPipe} from './pipe/filter.pipe';
+import {HighlightDirective} from './pipe/highlight.pipe';
+import {CastComponent} from './admin/component/cast/cast.component';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
 
+registerLocaleData(en);
 
 @NgModule({
   declarations: [
@@ -59,12 +68,18 @@ import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
     AddCastMovieComponent,
     AddDirectorMovieComponent,
     ProfilePageComponent,
+    UploadImageComponent,
+    ListCastMovieComponent,
+    FilterPipe,
+    HighlightDirective,
+    CastComponent
   ],
   entryComponents: [
     AddMovieComponent,
     AddGenreMovieComponent,
     AddCastMovieComponent,
-    AddDirectorMovieComponent
+    AddDirectorMovieComponent,
+    ListCastMovieComponent
   ],
   imports: [
     BrowserModule,
@@ -95,6 +110,8 @@ import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
     MatCardModule,
     NgbPaginationModule,
     NgbAlertModule,
+    MatRadioModule,
+
   ],
   providers: [
     {provide: MAT_DIALOG_DATA, useValue: {}},

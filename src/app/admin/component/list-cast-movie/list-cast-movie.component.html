@@ -1,0 +1,30 @@
+<h3>Choose Movie's Cast</h3>
+<mat-divider></mat-divider>
+<mat-dialog-content class="root-content">
+  <div class="search-list">
+    <mat-form-field style="width: auto" appearance="outline">
+      <input matInput placeholder="Search movie's cast" [(ngModel)]="searchText" autofocus (ngModelChange)="show()">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="root-page">
+    <div class="one-page-cast">
+      <mat-selection-list class="list-cast" [formControl]="movieCast">
+        <mat-list-option *ngFor="let cast of castList | appFilter: searchText" [value]="cast.id">
+          <app-cast [cast]="cast"></app-cast>
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="group-button">
+    <button class="button-cast" mat-raised-button (click)="onNoClick()">
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
+    <button type="submit" (click)="sendListCast()" class="button-genre save-movie-btn"
+            mat-raised-button>
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -34,10 +34,10 @@ export class LoginadminComponent implements OnInit {
     this.submitted = true;
     this.loginRequest = new LoginForm(this.loginForm.value.username, this.loginForm.value.password);
     await this.loginAdminService.loginAdmin(this.loginRequest).toPromise().then((data: any) => {
-      // console.log(data);
+      console.log(data);
       if (data.statusCode != null) {
         this.errorMessage = data.message;
-      } else if (data.statusCode == null) {
+      } else {
         this.loginResponse = data;
         console.log(this.loginResponse);
         // tslint:disable-next-line:prefer-for-of

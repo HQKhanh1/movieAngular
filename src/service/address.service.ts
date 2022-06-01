@@ -55,4 +55,17 @@ export class AddressService {
       this.httpOptions
     );
   }
+
+  getAllByTownId(id: number): Observable<any> {
+    this.headers = sessionStorage.getItem('token');
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: this.headers,
+      }).set('Content-Type', 'application/json'),
+    };
+    return this.httpClient.get<any>(
+      'http://localhost:8080/api/address/getAddressByTownId/' + id,
+      this.httpOptions
+    );
+  }
 }

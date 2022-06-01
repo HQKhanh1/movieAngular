@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, DoCheck, OnInit, ChangeDetectorRef} from '@angular/core';
 import {LoginAdminService} from '../../../../service/login-admin.service';
 import {ImageModel} from '../../../../model/ImageModel';
 import {Router} from '@angular/router';
+import {AccountService} from '../../../../service/account.service';
+import {Account} from '../../../../model/Account';
 
 @Component({
   selector: 'app-header',
@@ -12,8 +14,12 @@ export class HeaderComponent implements OnInit {
   username: string;
   accId: number;
   accImage: ImageModel;
+  infoAccount: Account;
 
-  constructor(private loginService: LoginAdminService, private router: Router) {
+  constructor(private loginService: LoginAdminService,
+              private router: Router,
+              private accountService: AccountService,
+              private cd: ChangeDetectorRef) {
   }
 
   async ngOnInit() {
@@ -22,13 +28,20 @@ export class HeaderComponent implements OnInit {
     }
     if (sessionStorage.getItem('idAcc')) {
       this.accId = Number(sessionStorage.getItem('idAcc'));
+
+      await this.accountService.getAccount(this.accId).toPromise().then((data: any) => {
+        this.infoAccount = data;
+      });
       await this.loginService.getAccImage(this.accId).toPromise().then((data: any) => {
-        if (data.statusCode == null) {
+        if (data != null) {
           this.accImage = data;
+        } else {
+          if (this.infoAccount.gender === true) {
+            this.accImage = new ImageModel('male.png', './assets/image/male.png');
+          } else {
+            this.accImage = new ImageModel('female.png', './assets/image/female.png');
+          }
         }
-        // if (data.statusCode != null) {
-        //   this.accImage = data;
-        // }
       });
     }
 
@@ -44,6 +57,6 @@ export class HeaderComponent implements OnInit {
   }
 
   openProfilePage() {
-    this.router.navigate(['admin/pages/profile']).then(r => {location.reload(); });
+    this.router.navigate(['admin/pages/profile']);
   }
 }

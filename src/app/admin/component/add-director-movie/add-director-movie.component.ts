@@ -7,6 +7,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MovieCast} from '../../../../model/MovieCast';
 import {MovieDirectorService} from '../../../../service/movie-director.service';
 import {MovieDirector} from '../../../../model/MovieDirector';
+import {UtilClass} from "../../../../util/utilClass";
+import {UTIL} from "../../../../util/util";
 
 @Component({
   selector: 'app-add-director-movie',
@@ -47,7 +49,11 @@ export class AddDirectorMovieComponent implements OnInit {
         this.directorForm.value.birthday);
       this.directorService.addDirector(this.director).subscribe((data: any) => {
           console.log(data);
-          alert('Create genre successfully');
+          if (data.statusCode === undefined) {
+            UtilClass.showSuccess(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_ADD_DIRECTOR);
+          } else {
+            UtilClass.showSuccess(UTIL.ICON_ERROR, data.message);
+          }
         },
         (error => {
           if (error.statusText === 'OK') {
