@@ -8,9 +8,9 @@
     </mat-form-field>
   </div>
   <div class="root-page">
-    <div class="one-page-cast">
+    <div *ngIf="castList.length > 0" class="one-page-cast">
       <mat-selection-list class="list-cast" [formControl]="movieCast">
-        <mat-list-option (click)="bindingData(cast.id)" *ngFor="let cast of castList | appFilter: searchText"
+        <mat-list-option (click)="bindingData(cast)" *ngFor="let cast of castList | appFilter: searchText"
                          [value]="cast.id">
           <app-cast [cast]="cast.id"></app-cast>
         </mat-list-option>
@@ -18,19 +18,29 @@
     </div>
     <div *ngIf="castChooses.length > 0" class="choose-list">
       <div *ngFor="let castChoose of castChooses">
-        <app-cast [cast]="castChoose"></app-cast>
+        <div class="cast-chosen-root">
+          <button style="width: fit-content; height: fit-content" mat-button (click)="removeCastChoosed(castChoose)">
+            <mat-icon style="color: red">remove_circle_outline</mat-icon>
+          </button>
+          <div class="cast-chosen">
+            <app-cast [cast]="castChoose.id"></app-cast>
+            <label style="font-size: 11px">in the role</label>
+            <input type="character" style="width: 100px" placeholder="Character" required>
+            <mat-error *ngIf="sendCast" class="required-character">Please <strong>fill</strong> the field</mat-error>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </mat-dialog-content>
-<!--<mat-dialog-actions>-->
-<!--  <div class="group-button">-->
-<!--    <button class="button-cast" mat-raised-button (click)="onNoClick()">-->
-<!--      <mat-icon>exit_to_app</mat-icon>-->
-<!--    </button>-->
-<!--    <button type="submit" (click)="sendListCast()" class="button-genre save-movie-btn"-->
-<!--            mat-raised-button>-->
-<!--      <mat-icon>save</mat-icon>-->
-<!--    </button>-->
-<!--  </div>-->
-<!--</mat-dialog-actions>-->
+<mat-dialog-actions>
+  <div class="group-button">
+    <button class="button-cast" mat-raised-button (click)="onNoClick()">
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
+    <button type="submit" (click)="sendListCast()" class="button-genre save-movie-btn"
+            mat-raised-button>
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+</mat-dialog-actions>
