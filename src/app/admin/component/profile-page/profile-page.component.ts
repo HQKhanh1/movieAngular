@@ -66,8 +66,6 @@ export class ProfilePageComponent implements OnInit {
   ngOnInit() {
     this.accId = +sessionStorage.getItem('idAcc');
     this.maxDate = {year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()};
-    this.getImgAcc().then(r => {
-    });
     this.getAccInfo().then(r => {
     });
     this.getCities().then(r => {
@@ -92,24 +90,11 @@ export class ProfilePageComponent implements OnInit {
     });
   }
 
-  async getImgAcc() {
-    await this.loginService.getAccImage(this.accId).toPromise().then((data: any) => {
-      if (data != null) {
-        this.accImage = data;
-      } else {
-        if (this.infoAccount.gender === true) {
-          this.accImage = new ImageModel(UTIL.DEFAUT_ACCOUNT_IMAGE_NAME_MALE, UTIL.DEFAULT_ACCOUNT_IMAGE_URL_MALE);
-        } else {
-          this.accImage = new ImageModel(UTIL.DEFAUT_ACCOUNT_IMAGE_NAME_FEMALE, UTIL.DEFAULT_ACCOUNT_IMAGE_URL_FEMALE);
-        }
-      }
-    });
-  }
-
   async getAccInfo() {
     await this.accountService.getAccount(this.accId).toPromise().then((data: any) => {
       this.infoAccount = data;
-      console.log(data);
+      this.getImgAcc().then(r => {
+      });
       const date: Date = new Date(this.infoAccount.birthday);
       const month: number = date.getMonth() + 1;
       this.dayStart = date.getDate() + '-' + month + '-' + date.getFullYear();
@@ -128,6 +113,20 @@ export class ProfilePageComponent implements OnInit {
     });
   }
 
+  async getImgAcc() {
+    await this.loginService.getAccImage(this.infoAccount.avatar).toPromise().then((data: any) => {
+      if (data != null) {
+        this.accImage = data;
+      } else {
+        if (this.infoAccount.gender === true) {
+          this.accImage = new ImageModel(UTIL.DEFAUT_ACCOUNT_IMAGE_NAME_MALE, UTIL.DEFAULT_ACCOUNT_IMAGE_URL_MALE);
+        } else {
+          this.accImage = new ImageModel(UTIL.DEFAUT_ACCOUNT_IMAGE_NAME_FEMALE, UTIL.DEFAULT_ACCOUNT_IMAGE_URL_FEMALE);
+        }
+      }
+    });
+  }
+
   async onSubmit() {
     this.submitted = true;
     if (!this.updateAccountForm.invalid) {
@@ -143,9 +142,9 @@ export class ProfilePageComponent implements OnInit {
       console.log(this.infoAccount);
       await this.accountService.updateAccount(this.infoAccount).toPromise().then((data: any) => {
         if (data.statusCode != null) {
-          UtilClass.showSuccess(UTIL.ICON_ERROR, data.message);
+          UtilClass.showMesageAlert(UTIL.ICON_ERROR, data.message);
         } else {
-          UtilClass.showSuccess(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_DETAIL_ACCOUNT);
+          UtilClass.showMesageAlert(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_DETAIL_ACCOUNT);
         }
       });
     }
@@ -208,8 +207,8 @@ export class ProfilePageComponent implements OnInit {
   async uploadAccImageSubmit() {
     this.uploadImageSubmitted = true;
     if (!this.uploadAccImage.invalid) {
-      await this.uploadImageService.uploadImage(this.fileToUpload, this.accId).toPromise().then((data: any) => {
-        UtilClass.showSuccess(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_AVATAR);
+      await this.uploadImageService.uploadImageAcc(this.fileToUpload, this.accId).toPromise().then((data: any) => {
+        UtilClass.showMesageAlert(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_AVATAR);
         setTimeout(() => {
           location.reload();
         }, 2000);

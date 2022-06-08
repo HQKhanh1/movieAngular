@@ -8,6 +8,8 @@ import {MovieCastService} from '../../../../service/movie-cast.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {UtilClass} from 'src/util/utilClass';
 import {UTIL} from 'src/util/util';
+import {ImageModel} from '../../../../model/ImageModel';
+import {UploadImageService} from '../../../../service/upload-image.service';
 
 @Component({
   selector: 'app-add-cast-movie',
@@ -23,9 +25,13 @@ export class AddCastMovieComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
   cast: MovieCast;
   castList: MovieCast[] = [];
+  castImage: ImageModel = new ImageModel(UTIL.DEFAUT_MOVIE_POSTER_NAME, UTIL.DEFAULT_ACCOUNT_IMAGE_URL_MALE);
+  fileToUpload: File;
+  submitted = false;
 
   constructor(private castService: MovieCastService,
               public dialogRef: MatDialogRef<AddCastMovieComponent>,
+              private uploadImage: UploadImageService,
               @Inject(MAT_DIALOG_DATA) public data: MovieCast[]) {
   }
 
@@ -39,7 +45,8 @@ export class AddCastMovieComponent implements OnInit {
     });
   }
 
-  saveCast() {
+  async saveCast() {
+    this.submitted = true;
     if (this.castForm.valid) {
       this.cast = new MovieCast(
         null,
@@ -47,16 +54,20 @@ export class AddCastMovieComponent implements OnInit {
         this.castForm.value.name,
         this.castForm.value.story,
         this.castForm.value.birthday);
-      this.castService.addCast(this.cast).subscribe((data: any) => {
+      await this.uploadImage.uploadImageAll(this.fileToUpload,  UTIL.DEFAULT_IMAGE_CAST).toPromise().then(((result: any) => {
+        console.log(result);
+        this.cast.avatar = result.path;
+      }));
+      await this.castService.addCast(this.cast).toPromise().then((data: any) => {
           console.log(data);
           if (data.statusCode === undefined) {
-            UtilClass.showSuccess(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_ADD_CAST);
+            UtilClass.showMesageAlert(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_ADD_CAST);
           } else {
-            UtilClass.showSuccess(UTIL.ICON_ERROR, data.message);
+            UtilClass.showMesageAlert(UTIL.ICON_ERROR, data.message);
           }
         },
         (error => {
-          UtilClass.showSuccess(UTIL.ICON_ERROR, error.message);
+          UtilClass.showMesageAlert(UTIL.ICON_ERROR, error.message);
         }));
     }
   }
@@ -67,5 +78,14 @@ export class AddCastMovieComponent implements OnInit {
       console.log(this.castList);
       this.dialogRef.close(this.castList);
     }));
+  }
+
+  handleFileUpload(files: any) {
+    this.fileToUpload = files.item(0);
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.castImage = new ImageModel(this.fileToUpload.name, event.target.result);
+    };
+    reader.readAsDataURL(this.fileToUpload);
   }
 }

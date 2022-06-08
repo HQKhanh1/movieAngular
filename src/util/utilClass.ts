@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2';
 
 export class UtilClass {
-  static showSuccess(icon: any, title: any) {
+  static showMesageAlert(icon: any, title: any) {
     const Toast = Swal.mixin({
       toast: true,
       position: 'top-end',
@@ -17,6 +17,6 @@ export class UtilClass {
     Toast.fire({
       icon,
       title
-    });
+    }).then(r => {});
   }
 }

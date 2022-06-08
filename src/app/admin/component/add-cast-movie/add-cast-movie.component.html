@@ -2,50 +2,53 @@
 <mat-dialog-content>
   <form [formGroup]="castForm">
     <div class="dialog">
-      <div class="dialog left">
-        <div class="item">
-          <mat-form-field appearance="fill">
-            <mat-label>Avatar</mat-label>
-            <input matInput placeholder="Link avatar" formControlName="avatar" [errorStateMatcher]="matcher">
-            <mat-error *ngIf="castForm.get('avatar').errors?.required">
-              Avatar is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
+      <div class="card mb-3 mb-xl-0">
+        <!--      filed poster-->
+        <div class="card-header text-center">Cast Avatar</div>
+        <div class="card-body">
+          <div class="img-poster">
+            <img src="{{castImage.url}}"
+                 alt="poster">
+          </div>
+          <div class="item">
+            <input class="form-control form-control-sm"
+                   (change)="handleFileUpload($event.target.files)"
+                   type="file" accept="image/*" formControlName="avatar"
+                   [ngClass]="{'is-invalid':submitted && castForm.get('avatar').errors?.required}">
+            <div class="invalid-feedback form-error small"><strong>Avatar</strong> is required</div>
+          </div>
         </div>
-        <span *ngIf="castForm.value.avatar != ''" class="item">
-          <img style="width: 170px; height: 255px"
-               src="{{castForm.value.avatar}}"
-               alt="avatar">
-        </span>
       </div>
-      <div class="dialog right">
-        <div class="item">
-          <mat-form-field appearance="fill">
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="name" [errorStateMatcher]="matcher">
-            <mat-error *ngIf="castForm.get('name').errors?.required">
-              Name is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="item">
-          <mat-form-field class="date-picker" appearance="fill">
-            <mat-label>Birthday</mat-label>
-            <input matInput [matDatepicker]="picker" [max]="maxDate" formControlName="birthday"
-                   [errorStateMatcher]="matcher">
-            <mat-error *ngIf="castForm.get('birthday').errors?.required">
-              Birthday is <strong>required</strong>
-            </mat-error>
-            <mat-hint>DD/MM/YYYY</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker color="primary"></mat-datepicker>
-          </mat-form-field>
-        </div>
-        <div class="item">
-          <mat-form-field appearance="fill">
-            <mat-label>Story</mat-label>
-            <textarea matInput formControlName="story"></textarea>
-          </mat-form-field>
+      <div class="card mb-3 mb-xl-0">
+        <div class="card-body">
+          <div class="item">
+            <mat-form-field appearance="outline">
+              <mat-label>Name</mat-label>
+              <input matInput formControlName="name" [errorStateMatcher]="matcher">
+              <mat-error *ngIf="castForm.get('name').errors?.required">
+                Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="item">
+            <mat-form-field class="date-picker" appearance="outline">
+              <mat-label>Birthday</mat-label>
+              <input matInput [matDatepicker]="picker" [max]="maxDate" formControlName="birthday"
+                     [errorStateMatcher]="matcher">
+              <mat-error *ngIf="castForm.get('birthday').errors?.required">
+                Birthday is <strong>required</strong>
+              </mat-error>
+              <mat-hint>DD/MM/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker color="primary"></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="item">
+            <mat-form-field appearance="outline">
+              <mat-label>Story</mat-label>
+              <textarea matInput formControlName="story"></textarea>
+            </mat-form-field>
+          </div>
         </div>
       </div>
     </div>

@@ -21,6 +21,8 @@ import {FKDirector} from '../../../../model/FKDirector';
 import {ImageModel} from '../../../../model/ImageModel';
 import {UTIL} from '../../../../util/util';
 import {ListCastMovieComponent} from '../list-cast-movie/list-cast-movie.component';
+import {UploadImageService} from '../../../../service/upload-image.service';
+import {UtilClass} from '../../../../util/utilClass';
 
 
 @Component({
@@ -56,6 +58,7 @@ export class AddMovieComponent implements OnInit {
   constructor(public movieService: MovieService,
               private movieGenreService: MovieGenreService,
               private movieCastService: MovieCastService,
+              private uploadImage: UploadImageService,
               private movieDirectorService: MovieDirectorService,
               public dialogRef: MatDialogRef<AddMovieComponent>,
               private matDialog: MatDialog) {
@@ -164,9 +167,7 @@ export class AddMovieComponent implements OnInit {
 
   async saveMovie() {
     this.submitted = true;
-    if (this.movieService.formMovie.invalid && !this.checkDuration()) {
-      this.movieService.formMovie.value.movieDuration =
-        this.hours.toString() + ':' + this.minutes.toString() + ':' + this.second.toString();
+    if (!this.movieService.formMovie.invalid && !this.checkDuration()) {
       this.movieAdd = new Movie(
         null,
         this.movieService.formMovie.value.title,
@@ -176,53 +177,61 @@ export class AddMovieComponent implements OnInit {
         this.movieService.formMovie.value.linkTrailer,
         this.movieService.formMovie.value.linkMovie,
         this.movieService.formMovie.value.releaseDate,
-        this.movieService.formMovie.value.movieDuration,
+        this.hours.toString() + ':' + this.minutes.toString() + ':' + this.second.toString(),
         0,
         null,
         null,
         null,
         null);
       console.log(this.movieAdd);
+      await this.uploadImage.uploadImageAll(this.fileToUpload, UTIL.DEFAULT_IMAGE_MOVIE).toPromise().then(((result: any) => {
+        console.log(result.path);
+        this.movieAdd.poster = result.path;
+      }));
       await this.movieService.addMovie(this.movieAdd).toPromise().then((value: any) => {
-        console.log('Kkkkk: ', value);
+        if (value.statusCode === undefined) {
+          UtilClass.showMesageAlert(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_ADD_MOVIE);
+        } else {
+          UtilClass.showMesageAlert(UTIL.ICON_ERROR, value.message);
+        }
       });
-      await this.movieService.getMovieByTitle(this.movieAdd.title).toPromise().then((value: any) => {
-
-        this.movieGetByTitle = value;
-        console.log('Title: ', this.movieGetByTitle);
-        // add genre
-        if (this.movieGenre.value.length === 0) {
-          this.fkGenre = null;
-        } else {
-          for (const id of this.movieGenre.value) {
-            this.fkGenre.push(new FKGenre(value.id, id));
-          }
-          this.movieGetByTitle.fkGenres = this.fkGenre;
-          console.log('them được genre');
-        }
-        // add cast
-        if (this.movieCast.value.length === 0) {
-          this.fkCast = null;
-        } else {
-          for (const id of this.movieCast.value) {
-            this.fkCast.push(new FKCast(value.id, id));
-          }
-          this.movieGetByTitle.fkCasts = this.fkCast;
-        }
-        // add director
-        if (this.movieDirector.value.length === 0) {
-          this.fkDirector = null;
-        } else {
-          for (const id of this.movieDirector.value) {
-            this.fkDirector.push(new FKDirector(value.id, id));
-          }
-          this.movieGetByTitle.fkDirectors = this.fkDirector;
-        }
-        console.log('pppppppppppp:', this.movieGetByTitle);
-        this.movieService.editMovie(this.movieGetByTitle).subscribe((data: any) => {
-          console.log('uuuuuuuuuuuuuuuuuuuuu', data);
-        });
-      });
+      // await this.movieService.getMovieByTitle(this.movieAdd.title).toPromise().then((value: any) => {
+      //
+      //   this.movieGetByTitle = value;
+      //   console.log('Title: ', this.movieGetByTitle);
+      //   // add genre
+      //   if (this.movieGenre.value.length === 0) {
+      //     this.fkGenre = null;
+      //   } else {
+      //     for (const id of this.movieGenre.value) {
+      //       this.fkGenre.push(new FKGenre(value.id, id));
+      //     }
+      //     this.movieGetByTitle.fkGenres = this.fkGenre;
+      //     console.log('them được genre');
+      //   }
+      //   // add cast
+      //   // if (this.movieCast.value.length === 0) {
+      //   //   this.fkCast = null;
+      //   // } else {
+      //   //   for (const id of this.movieCast.value) {
+      //   //     this.fkCast.push(new FKCast(value.id, id));
+      //   //   }
+      //   //   this.movieGetByTitle.fkCasts = this.fkCast;
+      //   // }
+      //   // add director
+      //   if (this.movieDirector.value.length === 0) {
+      //     this.fkDirector = null;
+      //   } else {
+      //     for (const id of this.movieDirector.value) {
+      //       this.fkDirector.push(new FKDirector(value.id, id));
+      //     }
+      //     this.movieGetByTitle.fkDirectors = this.fkDirector;
+      //   }
+      //   console.log('pppppppppppp:', this.movieGetByTitle);
+      //   this.movieService.editMovie(this.movieGetByTitle).subscribe((data: any) => {
+      //     console.log('uuuuuuuuuuuuuuuuuuuuu', data);
+      //   });
+      // });
       // this.getMovie(this.movieAdd.title);
       // console.log('IDIDIDIDIDID: ', idMovie);
     }
@@ -242,8 +251,7 @@ export class AddMovieComponent implements OnInit {
   }
 
   checkDuration(): boolean {
-    return (this.hours === 0 && this.minutes === 0 && this.second === 0) ||
-      (this.hours === null && this.minutes === null && this.second === null);
+    return (this.hours === 0 && this.minutes === 0 && this.second === 0);
   }
 
   genreId(id: number): MovieGenre {

@@ -7,7 +7,7 @@ import {MovieGenre} from '../model/MovieGenre';
   providedIn: 'root'
 })
 export class MovieGenreService {
-  public headers: any | null = 'Bearer ' + sessionStorage.getItem('token');
+  public headers: any | null = sessionStorage.getItem('token');
   name = {name: ''};
   private httpOptions = {
     headers: new HttpHeaders({

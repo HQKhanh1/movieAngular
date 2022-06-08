@@ -10,5 +10,21 @@ mat-selection-list::ng-deep .mat-list-item {
   flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-
+}
+.one-page-cast {
+  background-color: white;
+  border: 1px inherit;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 0;
+}
+.choose-list {
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 5px;
+  margin-left: 10px;
+  padding: 5px;
+  max-width: 400px;
+  height: fit-content;
+  background-color: white;
 }

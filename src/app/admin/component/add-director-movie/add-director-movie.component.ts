@@ -50,9 +50,9 @@ export class AddDirectorMovieComponent implements OnInit {
       this.directorService.addDirector(this.director).subscribe((data: any) => {
           console.log(data);
           if (data.statusCode === undefined) {
-            UtilClass.showSuccess(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_ADD_DIRECTOR);
+            UtilClass.showMesageAlert(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_ADD_DIRECTOR);
           } else {
-            UtilClass.showSuccess(UTIL.ICON_ERROR, data.message);
+            UtilClass.showMesageAlert(UTIL.ICON_ERROR, data.message);
           }
         },
         (error => {

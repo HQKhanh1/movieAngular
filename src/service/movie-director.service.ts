@@ -1,15 +1,14 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {MovieCast} from "../model/MovieCast";
-import {MovieDirector} from "../model/MovieDirector";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {MovieDirector} from '../model/MovieDirector';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieDirectorService {
 
-  public headers: any | null = 'Bearer ' + sessionStorage.getItem('token');
+  public headers: any | null =  sessionStorage.getItem('token');
   director = {avatar: '', name: '', story: '', birthday: new Date()};
   private httpOptions = {
     headers: new HttpHeaders({
@@ -35,7 +34,7 @@ export class MovieDirectorService {
 
   public addDirector(movieDirector: MovieDirector) {
     if (sessionStorage.getItem('token')) {
-      this.headers = 'Bearer ' + sessionStorage.getItem('token');
+      this.headers = sessionStorage.getItem('token');
     }
     this.director.avatar = movieDirector.avatar;
     this.director.name = movieDirector.name;

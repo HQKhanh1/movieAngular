@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
       await this.accountService.getAccount(this.accId).toPromise().then((data: any) => {
         this.infoAccount = data;
       });
-      await this.loginService.getAccImage(this.accId).toPromise().then((data: any) => {
+      await this.loginService.getAccImage(this.infoAccount.avatar).toPromise().then((data: any) => {
         if (data != null) {
           this.accImage = data;
         } else {

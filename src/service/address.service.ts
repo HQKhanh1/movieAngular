@@ -7,7 +7,7 @@ import {District} from '../model/District';
   providedIn: 'root'
 })
 export class AddressService {
-  public headers: any | null = 'Bearer ' + sessionStorage.getItem('token');
+  public headers: any | null = sessionStorage.getItem('token');
   private httpOptions = {
     headers: new HttpHeaders({
       Authorization: this.headers,

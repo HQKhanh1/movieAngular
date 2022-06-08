@@ -37,13 +37,13 @@ export class AddGenreMovieComponent implements OnInit {
       this.genre = new MovieGenre(null, this.genreForm.value.genreName);
       this.movieGenre.addGenre(this.genre).subscribe((data: any) => {
           if (data.statusCode === undefined) {
-            UtilClass.showSuccess(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_ADD_GENRE);
+            UtilClass.showMesageAlert(UTIL.ICON_SUCCESS, UTIL.ALERT_MESAGE_SUCCESS_ADD_GENRE);
           } else {
-            UtilClass.showSuccess(UTIL.ICON_ERROR, data.message);
+            UtilClass.showMesageAlert(UTIL.ICON_ERROR, data.message);
           }
         },
         (error => {
-          UtilClass.showSuccess(UTIL.ICON_ERROR, error.message);
+          UtilClass.showMesageAlert(UTIL.ICON_ERROR, error.message);
         }));
     }
   }

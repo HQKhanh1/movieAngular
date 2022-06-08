@@ -1,8 +1,5 @@
-// tslint:disable-next-line:max-line-length
-// tslint:disable-next-line:max-line-length
-// tslint:disable-next-line:max-line-length
-// tslint:disable-next-line:max-line-length
 export enum UTIL {
+  ALERT_MESAGE_SUCCESS_ADD_MOVIE = 'Create movie successfully!',
   // tslint:disable-next-line:max-line-length
   DATE_PATERN = '^(?:(?:31(\\/|-|\\.)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)(\\/|-|\\.)(?:0?[1,3-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(\\/|-|\\.)0?2\\3(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\\d|2[0-8])(\\/|-|\\.)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|(?:(?:1[6-9]|[2-9]\\d)?\\d{2})(\\/|-|\\.)(?:(?:0?[1-9])|(?:1[0-2]))\\5(?:0?[1-9]|1\\d|2[0-8])$|^(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(\\/|-|\\.)0?2\\6(29)$|^(?:(?:1[6-9]|[2-9]\\d)?\\d{2})(?:(?:(\\/|-|\\.)(?:0?[1,3-9]|1[0-2])\\8(?:29|30))|(?:(\\/|-|\\.)(?:0?[13578]|1[02])\\9(?:31)))$',
   NUMBER_PHONE_PATERN = '^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$',
@@ -18,5 +15,10 @@ export enum UTIL {
   DEFAUT_ACCOUNT_IMAGE_NAME_FEMALE = 'male.png',
   DEFAULT_ACCOUNT_IMAGE_URL_FEMALE = './assets/image/male.png',
   ALERT_MESAGE_SUCCESS_ADD_DIRECTOR = 'Create genre successfully!',
-  ALERT_MESAGE_SUCCESS_ADD_CAST = 'Create cast successfully!'
+  ALERT_MESAGE_SUCCESS_ADD_CAST = 'Create cast successfully!',
+  DEFAULT_IMAGE_ACCOUNTS = '121',
+  DEFAULT_IMAGE_MOVIE = '221',
+  DEFAULT_IMAGE_CAST = '231',
+  DEFAULT_IMAGE_DIRECTOR = '241',
+  ALERT_MESAGE_SUCCESS_REMOVE_MOVIE = 'Deleted the movie successfully!',
 }

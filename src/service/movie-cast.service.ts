@@ -7,7 +7,7 @@ import {MovieCast} from '../model/MovieCast';
   providedIn: 'root'
 })
 export class MovieCastService {
-  public headers: any | null = 'Bearer ' + sessionStorage.getItem('token');
+  public headers: any | null = sessionStorage.getItem('token');
   cast = {avatar: '', name: '', story: '', birthday: new Date() };
   private httpOptions = {
     headers: new HttpHeaders({
@@ -30,10 +30,23 @@ export class MovieCastService {
       this.httpOptions
     );
   }
+  public getCastById(id: number): Observable<any> {
+    this.headers = sessionStorage.getItem('token');
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        Authorization: this.headers,
+      }).set('Content-Type', 'application/json'),
+    };
+    return this.httpClient.get<any>(
+      'http://localhost:8080/api/cast/' + id.valueOf(),
+      this.httpOptions
+    );
+  }
 
   public addCast(movieCast: MovieCast) {
     if (sessionStorage.getItem('token')) {
-      this.headers = 'Bearer ' + sessionStorage.getItem('token');
+      this.headers = sessionStorage.getItem('token');
+      console.log(this.headers);
     }
     this.cast.avatar = movieCast.avatar;
     this.cast.name = movieCast.name;

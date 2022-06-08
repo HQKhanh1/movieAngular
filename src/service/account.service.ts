@@ -7,7 +7,7 @@ import {Account} from '../model/Account';
   providedIn: 'root'
 })
 export class AccountService {
-  public headers: any | null = 'Bearer ' + sessionStorage.getItem('token');
+  public headers: any | null = sessionStorage.getItem('token');
   name = {name: ''};
   private httpOptions = {
     headers: new HttpHeaders({

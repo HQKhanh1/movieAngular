@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class LoginAdminService {
-  public headers: any | null = 'Bearer ' + sessionStorage.getItem('token');
+  public headers: any | null = sessionStorage.getItem('token');
   private httpOptions = {
     headers: new HttpHeaders({
       Authorization: this.headers,
@@ -27,15 +27,17 @@ export class LoginAdminService {
     );
   }
 
-  public getAccImage(id: number): Observable<any> {
+  public getAccImage(url: string): Observable<any> {
     this.headers = sessionStorage.getItem('token');
     this.httpOptions = {
       headers: new HttpHeaders({
         Authorization: this.headers,
       }).set('Content-Type', 'application/json'),
     };
-    return this.httpClient.get(
-      'http://localhost:8080/getImage/' + id, this.httpOptions);
+    const path = new FormData();
+    path.set('url', url.toString());
+    return this.httpClient.post(
+      'http://localhost:8080/getImage/', path);
   }
 
 
